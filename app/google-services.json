@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "648938719094",
+    "project_id": "motorcyclecatalogue",
+    "storage_bucket": "motorcyclecatalogue.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:648938719094:android:800e5ef798a4c57dfb1c57",
+        "android_client_info": {
+          "package_name": "com.jordju.motorcyclecatalogue"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "648938719094-lru6mackmp1nkj4vnpobsqp2rm8v8mkj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzIB0lKvmarMlhys4DR3rzc6eF6FkUPVM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "648938719094-lru6mackmp1nkj4vnpobsqp2rm8v8mkj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
