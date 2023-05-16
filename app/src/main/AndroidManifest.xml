@@ -16,6 +16,13 @@
         android:theme="@style/Theme.MotorcycleCatalogue"
         tools:targetApi="31">
         <activity
+            android:name=".EditProfileActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".CheckoutActivity"
             android:exported="false">
             <meta-data
