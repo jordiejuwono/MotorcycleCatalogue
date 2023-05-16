@@ -20,6 +20,9 @@ data class MotorcycleEntity(
     @ColumnInfo(name = "motorcycle_image")
     var motorcycleImage: String,
 
+    @ColumnInfo(name = "image_list")
+    var imageList: List<String>,
+
     @ColumnInfo(name = "category")
     var category: String,
 
@@ -31,6 +34,9 @@ data class MotorcycleEntity(
 
     @ColumnInfo(name = "oil_capacity")
     var oilTankCapacity: Double,
+
+    @ColumnInfo(name = "maximum_power")
+    var maximumPower: Double,
 
     @ColumnInfo(name = "price")
     var price: Double

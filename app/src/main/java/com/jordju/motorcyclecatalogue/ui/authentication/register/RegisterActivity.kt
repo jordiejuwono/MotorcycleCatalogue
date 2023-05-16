@@ -158,19 +158,11 @@ class RegisterActivity : AppCompatActivity() {
                 email = binding.etEmail.text.toString(),
                 password = binding.etPassword.text.toString(),
             )
-            viewModel.saveUserData(
-                User(
-                    fullName = binding.etName.text.toString(),
-                    email = binding.etEmail.text.toString(),
-                    age = 27,
-                )
-            )
-            if (selectedImage != null) {
-                viewModel.saveProfilePicture(
-                    selectedImage!!
-                )
-            }
         }
+    }
+
+    private fun saveUserData(dataReference: String, user: User) {
+        viewModel.saveUserData(dataReference, user)
     }
 
     private fun onProfileClick() {
@@ -200,7 +192,23 @@ class RegisterActivity : AppCompatActivity() {
 
                 }
                 is Resource.Success -> {
-                    Toast.makeText(this, "SUCCESS", Toast.LENGTH_SHORT).show()
+                    saveUserData(
+                        it.data?.uid ?: "",
+                        User(
+                            fullName = binding.etName.text.toString(),
+                            email = binding.etEmail.text.toString(),
+                        )
+                    )
+                    if (selectedImage != null) {
+                        viewModel.saveProfilePicture(
+                            it.data?.uid ?: "",
+                            selectedImage!!
+                        )
+                    }
+                    Toast.makeText(this, "Register User Successful!", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this, LoginActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                    startActivity(intent)
                 }
                 is Resource.Error -> {
                     Toast.makeText(this, it.message.orEmpty(), Toast.LENGTH_SHORT).show()

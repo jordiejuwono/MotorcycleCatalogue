@@ -11,9 +11,10 @@ interface MotorcycleRepository {
     // firebase
     suspend fun signInUser(email: String, password: String): Flow<Resource<FirebaseUser?>>
     suspend fun registerUser(email: String, password: String): Flow<Resource<FirebaseUser?>>
-    suspend fun saveUserData(user: User): Flow<Resource<Boolean>>
-    suspend fun saveUserPhoto(imageUri: Uri): Flow<Resource<String>>
+    suspend fun saveUserData(userReference: String, user: User): Flow<Resource<Boolean>>
+    suspend fun saveUserPhoto(userUid: String, imageUri: Uri): Flow<Resource<String>>
     fun getCurrentUser(): FirebaseUser?
+    suspend fun getUserFullData(): Flow<Resource<User?>>
     fun logoutUser()
 
     // local

@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class SaveProfilePictureUseCase @Inject constructor(private val repository: MotorcycleRepository) {
 
-    suspend fun execute(uriFile: Uri): Flow<Resource<String>> =
-        repository.saveUserPhoto(uriFile)
+    suspend fun execute(userUid: String, uriFile: Uri): Flow<Resource<String>> =
+        repository.saveUserPhoto(userUid, uriFile)
 
 }

@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class SaveUserDataUseCase @Inject constructor(private val repository: MotorcycleRepository) {
 
-    suspend fun execute(user: User): Flow<Resource<Boolean>> =
-        repository.saveUserData(user)
+    suspend fun execute(userReference: String, user: User): Flow<Resource<Boolean>> =
+        repository.saveUserData(userReference, user)
 
 }

@@ -1,5 +1,6 @@
 package com.jordju.motorcyclecatalogue.ui.home.motorcyclelist
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,6 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.jordju.core.data.Resource
 import com.jordju.core.data.local.entity.MotorcycleEntity
 import com.jordju.motorcyclecatalogue.databinding.FragmentMotorcycleListBinding
+import com.jordju.motorcyclecatalogue.ui.detail.DetailActivity
+import com.jordju.motorcyclecatalogue.ui.home.MainActivity
 import com.jordju.motorcyclecatalogue.ui.home.motorcyclelist.adapter.MotorcycleAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -46,7 +49,9 @@ class MotorcycleListFragment : Fragment() {
         val motorcycleAdapter = MotorcycleAdapter(object : MotorcycleAdapter.OnItemClick {
 
             override fun onClick(motorcycle: MotorcycleEntity) {
-                Toast.makeText(requireContext(), motorcycle.motorcycleName, Toast.LENGTH_SHORT).show()
+                val intent = Intent(requireContext(), DetailActivity::class.java)
+                intent.putExtra(DetailActivity.DETAIL_DATA, motorcycle)
+                startActivity(intent)
             }
 
         })

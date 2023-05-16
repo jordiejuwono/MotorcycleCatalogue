@@ -42,4 +42,16 @@ object UseCaseModule {
         return GetCurrentUserUseCase(repository)
     }
 
+    @Provides
+    @Singleton
+    fun provideGetUserFullDataUseCase(repository: MotorcycleRepository): GetUserFullDataUseCase {
+        return GetUserFullDataUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideLogoutUserUseCase(repository: MotorcycleRepository): LogoutUserUseCase {
+        return LogoutUserUseCase(repository)
+    }
+
 }

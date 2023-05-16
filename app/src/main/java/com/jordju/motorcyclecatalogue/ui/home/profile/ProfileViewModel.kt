@@ -5,15 +5,27 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseUser
 import com.jordju.core.data.Resource
+import com.jordju.core.data.model.User
 import com.jordju.core.domain.usecase.GetCurrentUserUseCase
+import com.jordju.core.domain.usecase.GetUserFullDataUseCase
+import com.jordju.core.domain.usecase.LogoutUserUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class ProfileViewModel @Inject constructor(private val currentUserUseCase: GetCurrentUserUseCase) :
+@HiltViewModel
+class ProfileViewModel @Inject constructor(
+    private val currentUserUseCase: GetCurrentUserUseCase,
+    private val getUserFullDataUseCase: GetUserFullDataUseCase,
+    private val logoutUserUseCase: LogoutUserUseCase
+) :
     ViewModel() {
 
     val currentUserState = MutableLiveData<Resource<FirebaseUser?>>()
+    val userFullDataState = MutableLiveData<Resource<User?>>()
+    val logoutState = MutableLiveData<Resource<Boolean>>()
 
     fun getCurrentUser() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -24,6 +36,28 @@ class ProfileViewModel @Inject constructor(private val currentUserUseCase: GetCu
                     currentUserState.postValue(Resource.Success(currentUser))
                 } catch (e: Exception) {
                     currentUserState.postValue(Resource.Error(e.message.orEmpty()))
+                }
+            }
+        }
+    }
+
+    fun getUserFullData() {
+        viewModelScope.launch {
+            getUserFullDataUseCase.execute().collect {
+                userFullDataState.postValue(it)
+            }
+        }
+    }
+
+    fun logoutUser() {
+        viewModelScope.launch(Dispatchers.IO) {
+            logoutState.postValue(Resource.Loading())
+            viewModelScope.launch(Dispatchers.Main) {
+                try {
+                    logoutUserUseCase.execute()
+                    logoutState.postValue(Resource.Success(true))
+                } catch (e: Exception) {
+                    logoutState.postValue(Resource.Error(e.message.orEmpty()))
                 }
             }
         }

@@ -29,14 +29,18 @@ class MotorcycleRepositoryImpl @Inject constructor(
         password: String
     ): Flow<Resource<FirebaseUser?>> = firebaseDataSource.registerUser(email, password)
 
-    override suspend fun saveUserData(user: User): Flow<Resource<Boolean>> =
-        firebaseDataSource.saveUserData(user)
+    override suspend fun saveUserData(userReference: String, user: User): Flow<Resource<Boolean>> =
+        firebaseDataSource.saveUserData(userReference, user)
 
-    override suspend fun saveUserPhoto(imageUri: Uri): Flow<Resource<String>> =
-        firebaseDataSource.saveUserPhoto(imageUri)
+    override suspend fun saveUserPhoto(userUid: String, imageUri: Uri): Flow<Resource<String>> =
+        firebaseDataSource.saveUserPhoto(userUid, imageUri)
 
     override fun getCurrentUser(): FirebaseUser? {
         return firebaseDataSource.getCurrentUser()
+    }
+
+    override suspend fun getUserFullData(): Flow<Resource<User?>> {
+        return firebaseDataSource.getUserFullData()
     }
 
     override fun logoutUser() {

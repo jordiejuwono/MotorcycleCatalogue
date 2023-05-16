@@ -12,6 +12,7 @@ import com.jordju.core.domain.usecase.SaveProfilePictureUseCase
 import com.jordju.core.domain.usecase.SaveUserDataUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -35,17 +36,17 @@ class RegisterViewModel @Inject constructor(
         }
     }
 
-    fun saveUserData(user: User) {
+    fun saveUserData(dataReference: String, user: User) {
         viewModelScope.launch(Dispatchers.IO) {
-            saveUserDataUseCase.execute(user).collect {
+            saveUserDataUseCase.execute(dataReference, user).collect {
                 saveUserDataState.postValue(it)
             }
         }
     }
 
-    fun saveProfilePicture(uri: Uri) {
+    fun saveProfilePicture(userUid: String, uri: Uri) {
         viewModelScope.launch(Dispatchers.IO) {
-            saveProfilePictureUseCase.execute(uri).collect {
+            saveProfilePictureUseCase.execute(userUid, uri).collect {
                 saveProfilePictureState.postValue(it)
             }
         }

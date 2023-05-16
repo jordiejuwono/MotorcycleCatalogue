@@ -5,6 +5,7 @@ import com.jordju.motorcyclecatalogue.ui.authentication.login.LoginViewModel
 import com.jordju.motorcyclecatalogue.ui.authentication.register.RegisterViewModel
 import com.jordju.motorcyclecatalogue.ui.home.motorcyclelist.MotorcycleListViewModel
 import com.jordju.motorcyclecatalogue.ui.home.profile.ProfileViewModel
+import com.jordju.motorcyclecatalogue.ui.splashscreen.SplashScreenViewModel
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -47,7 +48,17 @@ object ViewModelModule {
     @ViewModelScoped
     fun provideProfileViewModel(
         profileUserUseCase: GetCurrentUserUseCase,
+        getUserFullDataUseCase: GetUserFullDataUseCase,
+        logoutUserUseCase: LogoutUserUseCase
     ): ProfileViewModel {
-        return ProfileViewModel(profileUserUseCase)
+        return ProfileViewModel(profileUserUseCase, getUserFullDataUseCase, logoutUserUseCase)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideSplashScreenViewModel(
+        profileUserUseCase: GetCurrentUserUseCase,
+    ): SplashScreenViewModel {
+        return SplashScreenViewModel(profileUserUseCase)
     }
 }

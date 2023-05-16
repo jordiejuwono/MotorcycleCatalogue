@@ -2,13 +2,12 @@ package com.jordju.motorcyclecatalogue.ui.home
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import com.jordju.motorcyclecatalogue.R
 import com.jordju.motorcyclecatalogue.databinding.ActivityMainBinding
 import com.jordju.motorcyclecatalogue.ui.home.motorcyclelist.MotorcycleListFragment
 import com.jordju.motorcyclecatalogue.ui.home.profile.ProfileFragment
-import com.jordju.motorcyclecatalogue.ui.home.wishlist.WishlistFragment
+import com.jordju.motorcyclecatalogue.ui.home.transaction.TransactionFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -31,7 +30,7 @@ class MainActivity : AppCompatActivity() {
                     replaceContainerFragment(MotorcycleListFragment())
                 }
                 R.id.menu_favorite -> {
-                    replaceContainerFragment(WishlistFragment())
+                    replaceContainerFragment(TransactionFragment())
                 }
                 R.id.menu_profile -> {
                     replaceContainerFragment(ProfileFragment())
