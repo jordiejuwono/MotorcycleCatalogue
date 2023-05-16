@@ -1,0 +1,35 @@
+package com.jordju.core.data.local.entity
+
+import android.os.Parcelable
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import kotlinx.parcelize.Parcelize
+
+@Entity(tableName = "motorcycle")
+@Parcelize
+data class MotorcycleEntity(
+
+    @PrimaryKey
+    @ColumnInfo(name = "motorcycle_id")
+    var motorcycleId: Int,
+
+    @ColumnInfo(name = "motorcycle_name")
+    var motorcycleName: String,
+
+    @ColumnInfo(name = "motorcycle_image")
+    var motorcycleImage: String,
+
+    @ColumnInfo(name = "description")
+    var description: String,
+
+    @ColumnInfo(name = "displacement")
+    var displacement: Int,
+
+    @ColumnInfo(name = "oil_capacity")
+    var oilTankCapacity: Double,
+
+    @ColumnInfo(name = "price")
+    var price: Double
+
+) : Parcelable
