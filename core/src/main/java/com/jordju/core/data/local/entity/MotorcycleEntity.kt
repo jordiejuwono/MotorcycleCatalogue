@@ -20,6 +20,9 @@ data class MotorcycleEntity(
     @ColumnInfo(name = "motorcycle_image")
     var motorcycleImage: String,
 
+    @ColumnInfo(name = "category")
+    var category: String,
+
     @ColumnInfo(name = "description")
     var description: String,
 

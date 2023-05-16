@@ -1,6 +1,6 @@
 package com.jordju.core.di
 
-import com.jordju.core.domain.repository.FirebaseRepository
+import com.jordju.core.domain.repository.MotorcycleRepository
 import com.jordju.core.domain.usecase.LoginUserUseCase
 import com.jordju.core.domain.usecase.RegisterUserUseCase
 import com.jordju.core.domain.usecase.SaveProfilePictureUseCase
@@ -17,25 +17,25 @@ object UseCaseModule {
 
     @Provides
     @Singleton
-    fun provideRegisterUseCase(repository: FirebaseRepository): RegisterUserUseCase {
+    fun provideRegisterUseCase(repository: MotorcycleRepository): RegisterUserUseCase {
         return RegisterUserUseCase(repository)
     }
 
     @Provides
     @Singleton
-    fun provideLoginUseCase(repository: FirebaseRepository): LoginUserUseCase {
+    fun provideLoginUseCase(repository: MotorcycleRepository): LoginUserUseCase {
         return LoginUserUseCase(repository)
     }
 
     @Provides
     @Singleton
-    fun provideSaveUserDataUseCase(repository: FirebaseRepository): SaveUserDataUseCase {
+    fun provideSaveUserDataUseCase(repository: MotorcycleRepository): SaveUserDataUseCase {
         return SaveUserDataUseCase(repository)
     }
 
     @Provides
     @Singleton
-    fun provideSaveProfilePictureUseCase(repository: FirebaseRepository): SaveProfilePictureUseCase {
+    fun provideSaveProfilePictureUseCase(repository: MotorcycleRepository): SaveProfilePictureUseCase {
         return SaveProfilePictureUseCase(repository)
     }
 

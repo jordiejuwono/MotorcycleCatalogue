@@ -1,8 +1,9 @@
 package com.jordju.core.di
 
+import com.jordju.core.data.local.LocalDataSource
 import com.jordju.core.data.remote.FirebaseDataSource
-import com.jordju.core.data.repository.FirebaseRepositoryImpl
-import com.jordju.core.domain.repository.FirebaseRepository
+import com.jordju.core.data.repository.MotorcycleRepositoryImpl
+import com.jordju.core.domain.repository.MotorcycleRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,8 +16,8 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideFirebaseRepository(dataSource: FirebaseDataSource): FirebaseRepository {
-        return FirebaseRepositoryImpl(dataSource)
+    fun provideFirebaseRepository(firebaseDataSource: FirebaseDataSource, localDataSource: LocalDataSource): MotorcycleRepository {
+        return MotorcycleRepositoryImpl(firebaseDataSource, localDataSource)
     }
 
 }

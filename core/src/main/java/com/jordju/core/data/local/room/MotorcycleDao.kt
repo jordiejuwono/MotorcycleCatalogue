@@ -7,6 +7,9 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface MotorcycleDao {
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertMotorcycles(motorcycles: List<MotorcycleEntity>)
+
     @Query("SELECT * FROM motorcycle")
     fun getAllMotorcycles(): Flow<List<MotorcycleEntity>>
 
@@ -16,7 +19,7 @@ interface MotorcycleDao {
     @Delete
     suspend fun deleteMotorcycleFromWishlist(motorcycle: MotorcycleEntity)
 
-    @Query("SELECT EXISTS(SELECT * FROM motorcycle WHERE motorcycle_id=:id")
+    @Query("SELECT EXISTS(SELECT * FROM motorcycle WHERE motorcycle_id=:id)")
     fun isMotorcycleAlreadyExists(id: Int): Flow<Boolean>
 
 }

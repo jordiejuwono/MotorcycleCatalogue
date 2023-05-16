@@ -1,11 +1,9 @@
 package com.jordju.motorcyclecatalogue.di
 
-import com.jordju.core.domain.usecase.LoginUserUseCase
-import com.jordju.core.domain.usecase.RegisterUserUseCase
-import com.jordju.core.domain.usecase.SaveProfilePictureUseCase
-import com.jordju.core.domain.usecase.SaveUserDataUseCase
+import com.jordju.core.domain.usecase.*
 import com.jordju.motorcyclecatalogue.ui.authentication.login.LoginViewModel
 import com.jordju.motorcyclecatalogue.ui.authentication.register.RegisterViewModel
+import com.jordju.motorcyclecatalogue.ui.home.MainViewModel
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -36,4 +34,11 @@ object ViewModelModule {
         )
     }
 
+    @Provides
+    @ViewModelScoped
+    fun provideMainViewModel(
+        motorcyclesUseCase: GetAllMotorcyclesUseCase,
+    ): MainViewModel {
+        return MainViewModel(motorcyclesUseCase)
+    }
 }

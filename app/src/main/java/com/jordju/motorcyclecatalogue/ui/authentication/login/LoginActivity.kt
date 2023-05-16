@@ -9,6 +9,7 @@ import androidx.core.view.ContentInfoCompat.Flags
 import com.jordju.core.data.Resource
 import com.jordju.motorcyclecatalogue.databinding.ActivityLoginBinding
 import com.jordju.motorcyclecatalogue.ui.authentication.register.RegisterActivity
+import com.jordju.motorcyclecatalogue.ui.home.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -47,6 +48,12 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    private fun intentToHomePage() {
+        val intent = Intent(this, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(intent)
+    }
+
     private fun observeData() {
         viewModel.loginState.observe(this) {
             when (it) {
@@ -54,7 +61,7 @@ class LoginActivity : AppCompatActivity() {
 
                 }
                 is Resource.Success -> {
-                    Toast.makeText(this, "SUCCESS", Toast.LENGTH_SHORT).show()
+                    intentToHomePage()
                 }
                 is Resource.Error -> {
                     Toast.makeText(this, it.message.orEmpty(), Toast.LENGTH_SHORT).show()
