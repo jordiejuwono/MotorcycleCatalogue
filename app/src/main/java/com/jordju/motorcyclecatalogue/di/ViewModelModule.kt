@@ -3,7 +3,8 @@ package com.jordju.motorcyclecatalogue.di
 import com.jordju.core.domain.usecase.*
 import com.jordju.motorcyclecatalogue.ui.authentication.login.LoginViewModel
 import com.jordju.motorcyclecatalogue.ui.authentication.register.RegisterViewModel
-import com.jordju.motorcyclecatalogue.ui.home.MainViewModel
+import com.jordju.motorcyclecatalogue.ui.home.motorcyclelist.MotorcycleListViewModel
+import com.jordju.motorcyclecatalogue.ui.home.profile.ProfileViewModel
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -36,9 +37,17 @@ object ViewModelModule {
 
     @Provides
     @ViewModelScoped
-    fun provideMainViewModel(
+    fun provideMotorcycleListViewModel(
         motorcyclesUseCase: GetAllMotorcyclesUseCase,
-    ): MainViewModel {
-        return MainViewModel(motorcyclesUseCase)
+    ): MotorcycleListViewModel {
+        return MotorcycleListViewModel(motorcyclesUseCase)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideProfileViewModel(
+        profileUserUseCase: GetCurrentUserUseCase,
+    ): ProfileViewModel {
+        return ProfileViewModel(profileUserUseCase)
     }
 }

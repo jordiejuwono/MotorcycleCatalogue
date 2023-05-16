@@ -1,10 +1,7 @@
 package com.jordju.core.di
 
 import com.jordju.core.domain.repository.MotorcycleRepository
-import com.jordju.core.domain.usecase.LoginUserUseCase
-import com.jordju.core.domain.usecase.RegisterUserUseCase
-import com.jordju.core.domain.usecase.SaveProfilePictureUseCase
-import com.jordju.core.domain.usecase.SaveUserDataUseCase
+import com.jordju.core.domain.usecase.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -37,6 +34,12 @@ object UseCaseModule {
     @Singleton
     fun provideSaveProfilePictureUseCase(repository: MotorcycleRepository): SaveProfilePictureUseCase {
         return SaveProfilePictureUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetCurrentUserUseCase(repository: MotorcycleRepository): GetCurrentUserUseCase {
+        return GetCurrentUserUseCase(repository)
     }
 
 }

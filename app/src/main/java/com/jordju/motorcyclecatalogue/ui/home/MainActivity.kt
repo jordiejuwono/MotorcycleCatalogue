@@ -3,18 +3,48 @@ package com.jordju.motorcyclecatalogue.ui.home
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.fragment.app.Fragment
 import com.jordju.motorcyclecatalogue.R
+import com.jordju.motorcyclecatalogue.databinding.ActivityMainBinding
+import com.jordju.motorcyclecatalogue.ui.home.motorcyclelist.MotorcycleListFragment
+import com.jordju.motorcyclecatalogue.ui.home.profile.ProfileFragment
+import com.jordju.motorcyclecatalogue.ui.home.wishlist.WishlistFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    private val viewModel: MainViewModel by viewModels()
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        viewModel.getAllMotorcycles()
+        if (savedInstanceState == null) {
+            replaceContainerFragment(MotorcycleListFragment())
+        }
+
+        binding.bnvBottomNav.setOnItemSelectedListener { menu ->
+            when (menu.itemId) {
+                R.id.menu_home -> {
+                    replaceContainerFragment(MotorcycleListFragment())
+                }
+                R.id.menu_favorite -> {
+                    replaceContainerFragment(WishlistFragment())
+                }
+                R.id.menu_profile -> {
+                    replaceContainerFragment(ProfileFragment())
+                }
+            }
+            return@setOnItemSelectedListener true
+        }
+
+    }
+
+    private fun replaceContainerFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fl_container, fragment)
+            .commit()
     }
 }
