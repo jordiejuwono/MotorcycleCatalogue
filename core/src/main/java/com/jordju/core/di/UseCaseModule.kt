@@ -54,4 +54,28 @@ object UseCaseModule {
         return LogoutUserUseCase(repository)
     }
 
+    @Provides
+    @Singleton
+    fun provideFetchFirebaseMessagingUseCase(repository: MotorcycleRepository): FetchFirebaseMessagingTokenUseCase {
+        return FetchFirebaseMessagingTokenUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSendDataToTopicUseCase(repository: MotorcycleRepository): SendDataToTopicUseCase {
+        return SendDataToTopicUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSubscribeToTopicUseCase(repository: MotorcycleRepository): SubscribeToTopicUseCase {
+        return SubscribeToTopicUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSendMotorcycleOrderUseCase(repository: MotorcycleRepository): SendMotorcycleOrderUseCase {
+        return SendMotorcycleOrderUseCase(repository)
+    }
+
 }

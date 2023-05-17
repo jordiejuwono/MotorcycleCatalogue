@@ -16,6 +16,7 @@ import com.jordju.motorcyclecatalogue.R
 import com.jordju.motorcyclecatalogue.databinding.FragmentMotorcycleListBinding
 import com.jordju.motorcyclecatalogue.databinding.FragmentProfileBinding
 import com.jordju.motorcyclecatalogue.ui.authentication.login.LoginActivity
+import com.jordju.motorcyclecatalogue.ui.editprofile.EditProfileActivity
 import com.jordju.motorcyclecatalogue.ui.home.MainActivity
 import com.jordju.motorcyclecatalogue.ui.home.motorcyclelist.MotorcycleListViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,9 +40,21 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        editProfileData()
         getData()
         logoutUser()
         bindData()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getData()
+    }
+
+    private fun editProfileData() {
+        binding.btnEditProfile.setOnClickListener {
+            startActivity(Intent(requireContext(), EditProfileActivity::class.java))
+        }
     }
 
     private fun getData() {
@@ -83,7 +96,8 @@ class ProfileFragment : Fragment() {
 
                 }
                 is Resource.Success -> {
-                    Toast.makeText(requireContext(), "Logout Successful!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Logout Successful!", Toast.LENGTH_SHORT)
+                        .show()
                     val intent = Intent(requireContext(), LoginActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                     startActivity(intent)

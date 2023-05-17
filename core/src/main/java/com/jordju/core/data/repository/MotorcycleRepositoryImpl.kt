@@ -5,6 +5,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.jordju.core.data.Resource
 import com.jordju.core.data.local.LocalDataSource
 import com.jordju.core.data.local.entity.MotorcycleEntity
+import com.jordju.core.data.model.MotorcycleOrderDetails
 import com.jordju.core.data.model.User
 import com.jordju.core.data.remote.FirebaseDataSource
 import com.jordju.core.domain.repository.MotorcycleRepository
@@ -35,8 +36,37 @@ class MotorcycleRepositoryImpl @Inject constructor(
     override suspend fun saveUserPhoto(userUid: String, imageUri: Uri): Flow<Resource<String>> =
         firebaseDataSource.saveUserPhoto(userUid, imageUri)
 
+    override suspend fun sendMotorcycleOrder(
+        userReference: String,
+        motorcycle: MotorcycleOrderDetails
+    ): Flow<Resource<String>> {
+        return firebaseDataSource.sendMotorcycleOrder(userReference, motorcycle)
+    }
+
+    override suspend fun getMotorcyclesOrder(
+        userReference: String
+    ): Flow<Resource<List<MotorcycleOrderDetails>>> {
+        return firebaseDataSource.getMotorcyclesOrder(userReference)
+    }
+
     override fun getCurrentUser(): FirebaseUser? {
         return firebaseDataSource.getCurrentUser()
+    }
+
+    override suspend fun fetchFirebaseMessagingToken(): Flow<Resource<String>> {
+        return firebaseDataSource.fetchFirebaseMessagingToken()
+    }
+
+    override suspend fun subscribeToTopic(uid: String): Flow<Resource<Boolean>> {
+        return firebaseDataSource.subscribeToTopic(uid)
+    }
+
+    override suspend fun sendDataToTopic(
+        uid: String,
+        title: String,
+        message: String
+    ): Flow<Resource<Boolean>> {
+        return firebaseDataSource.sendDataToTopic(uid, title, message)
     }
 
     override suspend fun getUserFullData(): Flow<Resource<User?>> {

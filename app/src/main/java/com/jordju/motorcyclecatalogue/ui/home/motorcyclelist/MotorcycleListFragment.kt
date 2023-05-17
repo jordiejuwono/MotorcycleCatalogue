@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.jordju.core.data.Resource
 import com.jordju.core.data.local.entity.MotorcycleEntity
 import com.jordju.motorcyclecatalogue.databinding.FragmentMotorcycleListBinding
+import com.jordju.motorcyclecatalogue.ui.checkout.CheckoutActivity
 import com.jordju.motorcyclecatalogue.ui.detail.DetailActivity
 import com.jordju.motorcyclecatalogue.ui.home.MainActivity
 import com.jordju.motorcyclecatalogue.ui.home.motorcyclelist.adapter.MotorcycleAdapter
@@ -43,6 +44,7 @@ class MotorcycleListFragment : Fragment() {
 
     private fun getData() {
         viewModel.getAllMotorcycles()
+        viewModel.getFcmToken()
     }
 
     private fun setupRecyclerView() {
@@ -51,6 +53,12 @@ class MotorcycleListFragment : Fragment() {
             override fun onClick(motorcycle: MotorcycleEntity) {
                 val intent = Intent(requireContext(), DetailActivity::class.java)
                 intent.putExtra(DetailActivity.DETAIL_DATA, motorcycle)
+                startActivity(intent)
+            }
+
+            override fun onCheckOutClick(motorcycle: MotorcycleEntity) {
+                val intent = Intent(requireContext(), CheckoutActivity::class.java)
+                intent.putExtra(CheckoutActivity.CHECKOUT_DATA, motorcycle)
                 startActivity(intent)
             }
 

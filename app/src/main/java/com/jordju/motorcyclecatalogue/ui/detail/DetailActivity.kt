@@ -30,7 +30,7 @@ class DetailActivity : AppCompatActivity() {
 
     private fun setData() {
         val userData = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra("DATA", MotorcycleEntity::class.java)
+            intent.getParcelableExtra(DETAIL_DATA, MotorcycleEntity::class.java)
         } else {
             intent.getParcelableExtra<MotorcycleEntity>(DETAIL_DATA)
         }

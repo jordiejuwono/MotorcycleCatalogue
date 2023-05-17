@@ -1,5 +1,6 @@
 package com.jordju.motorcyclecatalogue.ui.home.motorcyclelist.adapter
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
@@ -16,6 +17,7 @@ class MotorcycleAdapter(private val onClickListener: OnItemClick) :
 
     interface OnItemClick {
         fun onClick(motorcycle: MotorcycleEntity)
+        fun onCheckOutClick(motorcycle: MotorcycleEntity)
     }
 
     private val differCallback = object : DiffUtil.ItemCallback<MotorcycleEntity>() {
@@ -38,6 +40,9 @@ class MotorcycleAdapter(private val onClickListener: OnItemClick) :
 
     class ListViewHolder(private val binding: MotorcycleItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
+        val buttonBuy = binding.btnBuy
+
         fun bind(data: MotorcycleEntity) {
 
             val localeId = Locale("in", "ID")
@@ -59,6 +64,9 @@ class MotorcycleAdapter(private val onClickListener: OnItemClick) :
         holder.bind(differ.currentList[position])
         holder.itemView.setOnClickListener {
             onClickListener.onClick(differ.currentList[position])
+        }
+        holder.buttonBuy.setOnClickListener {
+            onClickListener.onCheckOutClick(differ.currentList[position])
         }
     }
 

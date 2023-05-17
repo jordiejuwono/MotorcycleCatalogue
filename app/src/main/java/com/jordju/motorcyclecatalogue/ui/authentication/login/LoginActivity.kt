@@ -62,6 +62,7 @@ class LoginActivity : AppCompatActivity() {
                 }
                 is Resource.Success -> {
                     intentToHomePage()
+                    viewModel.subscribeToTopic(it.data?.uid ?: "")
                 }
                 is Resource.Error -> {
                     Toast.makeText(this, it.message.orEmpty(), Toast.LENGTH_SHORT).show()
