@@ -8,6 +8,7 @@ import com.jordju.motorcyclecatalogue.ui.editprofile.EditProfileViewModel
 import com.jordju.motorcyclecatalogue.ui.home.motorcyclelist.MotorcycleListViewModel
 import com.jordju.motorcyclecatalogue.ui.home.profile.ProfileViewModel
 import com.jordju.motorcyclecatalogue.ui.home.transaction.TransactionViewModel
+import com.jordju.motorcyclecatalogue.ui.orderdetail.OrderDetailViewModel
 import com.jordju.motorcyclecatalogue.ui.splashscreen.SplashScreenViewModel
 import dagger.Module
 import dagger.Provides
@@ -95,5 +96,14 @@ object ViewModelModule {
         getMotorcyclesOrderUseCase: GetMotorcyclesOrderUseCase
     ): TransactionViewModel {
         return TransactionViewModel(getCurrentUserUseCase, getMotorcyclesOrderUseCase)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideOrderDetailViewModel(
+        cancelMotorcycleOrderUseCase: CancelMotorcycleOrderUseCase,
+        getCurrentUserUseCase: GetCurrentUserUseCase
+    ): OrderDetailViewModel {
+        return OrderDetailViewModel(cancelMotorcycleOrderUseCase, getCurrentUserUseCase)
     }
 }

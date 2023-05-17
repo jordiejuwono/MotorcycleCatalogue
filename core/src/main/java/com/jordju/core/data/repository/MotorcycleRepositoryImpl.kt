@@ -49,6 +49,13 @@ class MotorcycleRepositoryImpl @Inject constructor(
         return firebaseDataSource.getMotorcyclesOrder(userReference)
     }
 
+    override suspend fun cancelMotorcycleOrder(
+        userReference: String,
+        orderId: String
+    ): Flow<Resource<Boolean>> {
+        return firebaseDataSource.cancelMotorcycleOrder(userReference, orderId)
+    }
+
     override fun getCurrentUser(): FirebaseUser? {
         return firebaseDataSource.getCurrentUser()
     }

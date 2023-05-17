@@ -37,6 +37,7 @@ class CheckoutActivity : AppCompatActivity() {
 
     private val viewModel: CheckoutViewModel by viewModels()
     private var uid: String = ""
+    private var fullName: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,6 +88,7 @@ class CheckoutActivity : AppCompatActivity() {
                         motorcycleName = userData?.motorcycleName ?: "",
                         motorcycleImage = userData?.motorcycleImage ?: "",
                         price = userData?.price ?: 0.0,
+                        orderedBy = fullName,
                         phoneNumber = binding.etPhoneNumber.text.toString(),
                         addressTo = binding.etAddress.text.toString(),
                         orderedAt = Calendar.getInstance().time.toString(),
@@ -149,6 +151,7 @@ class CheckoutActivity : AppCompatActivity() {
                 is Resource.Success -> {
                     binding.etPhoneNumber.setText(it.data?.phoneNumber)
                     binding.etAddress.setText(it.data?.address)
+                    fullName = it.data?.fullName ?: ""
                 }
                 is Resource.Error -> {
 

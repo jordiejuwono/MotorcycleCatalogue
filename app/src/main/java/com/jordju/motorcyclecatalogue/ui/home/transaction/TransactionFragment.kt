@@ -15,6 +15,7 @@ import com.jordju.core.data.local.entity.MotorcycleEntity
 import com.jordju.core.data.model.MotorcycleOrderDetails
 import com.jordju.motorcyclecatalogue.databinding.FragmentTransactionBinding
 import com.jordju.motorcyclecatalogue.ui.home.transaction.adapter.TransactionAdapter
+import com.jordju.motorcyclecatalogue.ui.orderdetail.OrderDetailActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -40,6 +41,11 @@ class TransactionFragment : Fragment() {
         setupRecyclerView()
     }
 
+    override fun onResume() {
+        super.onResume()
+        getData()
+    }
+
     private fun getData() {
         viewModel.getCurrentUser()
     }
@@ -48,11 +54,10 @@ class TransactionFragment : Fragment() {
         val transactionAdapter = TransactionAdapter(object : TransactionAdapter.OnItemClick {
 
             override fun onClick(motorcycle: MotorcycleOrderDetails) {
-//                val intent = Intent(requireContext(), DetailActivity::class.java)
-//                intent.putExtra(DetailActivity.DETAIL_DATA, motorcycle)
-//                startActivity(intent)
+                val intent = Intent(requireContext(), OrderDetailActivity::class.java)
+                intent.putExtra(OrderDetailActivity.ORDER_DETAIL, motorcycle)
+                startActivity(intent)
             }
-
 
         })
 
@@ -72,7 +77,7 @@ class TransactionFragment : Fragment() {
 
     private fun observeData(adapter: TransactionAdapter) {
         viewModel.currentUserState.observe(viewLifecycleOwner) {
-            when(it) {
+            when (it) {
                 is Resource.Loading -> {
                     showLoading(true)
                 }
@@ -86,7 +91,7 @@ class TransactionFragment : Fragment() {
         }
 
         viewModel.transactionListState.observe(viewLifecycleOwner) {
-            when(it) {
+            when (it) {
                 is Resource.Loading -> {
                     showLoading(true)
                 }

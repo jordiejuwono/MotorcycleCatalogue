@@ -78,4 +78,10 @@ object UseCaseModule {
         return SendMotorcycleOrderUseCase(repository)
     }
 
+    @Provides
+    @Singleton
+    fun provideCancelMotorcycleOrderUseCase(repository: MotorcycleRepository): CancelMotorcycleOrderUseCase {
+        return CancelMotorcycleOrderUseCase(repository)
+    }
+
 }

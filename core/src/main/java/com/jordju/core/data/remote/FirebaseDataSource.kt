@@ -31,7 +31,7 @@ interface FirebaseDataSource {
         motorcycle: MotorcycleOrderDetails
     ): Flow<Resource<Boolean>>
     suspend fun getMotorcyclesOrder(userReference: String): Flow<Resource<List<MotorcycleOrderDetails>>>
-    suspend fun cancelMotorcycleOrder(): Flow<Resource<Boolean>>
+    suspend fun cancelMotorcycleOrder(userReference: String, orderId: String): Flow<Resource<Boolean>>
     suspend fun fetchFirebaseMessagingToken(): Flow<Resource<String>>
     suspend fun subscribeToTopic(uid: String): Flow<Resource<Boolean>>
     suspend fun sendDataToTopic(
@@ -196,8 +196,26 @@ class FirebaseDataSourceImpl @Inject constructor(private val auth: FirebaseAuth)
         }
     }
 
-    override suspend fun cancelMotorcycleOrder(): Flow<Resource<Boolean>> {
-        TODO("Not yet implemented")
+    override suspend fun cancelMotorcycleOrder(userReference: String, orderId: String): Flow<Resource<Boolean>> {
+        return callbackFlow {
+            trySend(Resource.Loading())
+            FirebaseFirestore.getInstance().collection("orders")
+                .document(userReference)
+                .collection("orderList")
+                .document(orderId)
+                .delete()
+                .addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        trySend(Resource.Success(true))
+                    } else {
+                        trySend(Resource.Error(it.exception?.message))
+                    }
+                }.addOnFailureListener {
+                    trySend(Resource.Error(it.message))
+                }
+
+            awaitClose { this.cancel() }
+        }
     }
 
     override suspend fun fetchFirebaseMessagingToken(): Flow<Resource<String>> {
