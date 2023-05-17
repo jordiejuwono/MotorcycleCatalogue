@@ -105,9 +105,6 @@ class DetailActivity : AppCompatActivity() {
         userData?.imageList?.let { bindSliderData(it) }
 
         binding.apply {
-            Glide.with(this@DetailActivity)
-                .load(userData?.motorcycleImage)
-                .into(ivImage)
             tvCategory.text = userData?.category
             tvDescription.text = userData?.description
             tvName.text = userData?.motorcycleName
