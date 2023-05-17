@@ -14,6 +14,7 @@ interface MotorcycleRepository {
     suspend fun registerUser(email: String, password: String): Flow<Resource<FirebaseUser?>>
     suspend fun saveUserData(userReference: String, user: User): Flow<Resource<Boolean>>
     suspend fun saveUserPhoto(userUid: String, imageUri: Uri): Flow<Resource<String>>
+    suspend fun fetchUserPhoto(userUid: String): Flow<Resource<Uri>>
     suspend fun sendMotorcycleOrder(userReference: String, motorcycle: MotorcycleOrderDetails): Flow<Resource<Boolean>>
     suspend fun getMotorcyclesOrder(userReference: String): Flow<Resource<List<MotorcycleOrderDetails>>>
     suspend fun cancelMotorcycleOrder(userReference: String, orderId: String): Flow<Resource<Boolean>>

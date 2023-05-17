@@ -18,15 +18,15 @@ import javax.inject.Inject
 @HiltViewModel
 class CheckoutViewModel @Inject constructor(
     private val getUserFullDataUseCase: GetUserFullDataUseCase,
-    private val sendDataToTopicUseCase: SendDataToTopicUseCase,
     private val currentUserUseCase: GetCurrentUserUseCase,
     private val sendMotorcycleOrderUseCase: SendMotorcycleOrderUseCase,
+    private val saveUserDataUseCase: SaveUserDataUseCase,
 ) : ViewModel() {
 
     val userFullDataState = MutableLiveData<Resource<User?>>()
     val currentUserState = MutableLiveData<Resource<FirebaseUser?>>()
     val sendOrderState = MutableLiveData<Resource<Boolean>>()
-    val listState = MutableLiveData<Resource<List<MotorcycleOrderDetails>>>()
+    val saveUserDataState = MutableLiveData<Resource<Boolean>>()
 
     fun getUserFullData() {
         viewModelScope.launch {
@@ -58,4 +58,12 @@ class CheckoutViewModel @Inject constructor(
         }
     }
 
+
+    fun saveUserData(dataReference: String, user: User) {
+        viewModelScope.launch(Dispatchers.IO) {
+            saveUserDataUseCase.execute(dataReference, user).collect {
+                saveUserDataState.postValue(it)
+            }
+        }
+    }
 }

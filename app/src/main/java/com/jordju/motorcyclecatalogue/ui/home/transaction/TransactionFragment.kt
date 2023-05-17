@@ -26,6 +26,8 @@ class TransactionFragment : Fragment() {
 
     private val viewModel: TransactionViewModel by viewModels()
 
+    private lateinit var adapter: TransactionAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -39,6 +41,7 @@ class TransactionFragment : Fragment() {
 
         getData()
         setupRecyclerView()
+        observeData()
     }
 
     override fun onResume() {
@@ -51,7 +54,7 @@ class TransactionFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        val transactionAdapter = TransactionAdapter(object : TransactionAdapter.OnItemClick {
+        adapter = TransactionAdapter(object : TransactionAdapter.OnItemClick {
 
             override fun onClick(motorcycle: MotorcycleOrderDetails) {
                 val intent = Intent(requireContext(), OrderDetailActivity::class.java)
@@ -64,28 +67,33 @@ class TransactionFragment : Fragment() {
         with(binding.rvTransactions) {
             layoutManager = LinearLayoutManager(requireContext())
             setHasFixedSize(true)
-            adapter = transactionAdapter
+            adapter = this@TransactionFragment.adapter
         }
-
-        observeData(transactionAdapter)
-
     }
 
     private fun showLoading(isVisible: Boolean) {
         binding.pbLoading.isVisible = isVisible
     }
 
-    private fun observeData(adapter: TransactionAdapter) {
+    private fun showNoData(isNoData: Boolean) {
+        binding.apply {
+            tvNoData.text = "No transactions yet"
+            tvNoData.isVisible = isNoData
+        }
+    }
+
+    private fun observeData() {
         viewModel.currentUserState.observe(viewLifecycleOwner) {
             when (it) {
                 is Resource.Loading -> {
                     showLoading(true)
+                    showNoData(false)
                 }
                 is Resource.Success -> {
                     viewModel.getMotorcyclesOrder(it.data?.uid ?: "")
                 }
                 is Resource.Error -> {
-
+                    showNoData(false)
                 }
             }
         }
@@ -94,13 +102,18 @@ class TransactionFragment : Fragment() {
             when (it) {
                 is Resource.Loading -> {
                     showLoading(true)
+                    showNoData(false)
                 }
                 is Resource.Success -> {
                     showLoading(false)
                     adapter.differ.submitList(it.data)
+                    if (it.data?.isEmpty() == true) {
+                        showNoData(true)
+                    }
                 }
                 is Resource.Error -> {
                     showLoading(false)
+                    showNoData(false)
                 }
             }
         }

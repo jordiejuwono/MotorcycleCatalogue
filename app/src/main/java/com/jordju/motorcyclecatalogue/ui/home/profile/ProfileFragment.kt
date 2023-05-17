@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import com.bumptech.glide.Glide
 import com.jordju.core.data.Resource
 import com.jordju.motorcyclecatalogue.R
 import com.jordju.motorcyclecatalogue.databinding.FragmentMotorcycleListBinding
@@ -74,6 +75,38 @@ class ProfileFragment : Fragment() {
     }
 
     private fun bindData() {
+        viewModel.currentUserState.observe(viewLifecycleOwner) { data ->
+            when (data) {
+                is Resource.Loading -> {
+
+                }
+                is Resource.Success -> {
+                    viewModel.fetchUserPhoto(data.data?.uid ?: "")
+                }
+                is Resource.Error -> {
+
+                }
+            }
+        }
+
+        viewModel.photoState.observe(viewLifecycleOwner) { data ->
+            when (data) {
+                is Resource.Loading -> {
+
+                }
+                is Resource.Success -> {
+                    if (data.data != null) {
+                        Glide.with(requireContext())
+                            .load(data.data)
+                            .into(binding.ivProfilePicture)
+                    }
+                }
+                is Resource.Error -> {
+
+                }
+            }
+        }
+
         viewModel.userFullDataState.observe(viewLifecycleOwner) { data ->
             when (data) {
                 is Resource.Loading -> {

@@ -19,6 +19,7 @@ import com.google.type.DateTime
 import com.jordju.core.data.Resource
 import com.jordju.core.data.local.entity.MotorcycleEntity
 import com.jordju.core.data.model.MotorcycleOrderDetails
+import com.jordju.core.data.model.User
 import com.jordju.motorcyclecatalogue.R
 import com.jordju.motorcyclecatalogue.databinding.ActivityCheckoutBinding
 import com.jordju.motorcyclecatalogue.service.MyFirebaseMessagingService
@@ -38,6 +39,7 @@ class CheckoutActivity : AppCompatActivity() {
     private val viewModel: CheckoutViewModel by viewModels()
     private var uid: String = ""
     private var fullName: String = ""
+    private var email: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,6 +83,18 @@ class CheckoutActivity : AppCompatActivity() {
             tvName.text = userData?.motorcycleName
             tvPrice.text = formatRupiah.format(userData?.price)
             btnBuy.setOnClickListener {
+                // Auto update the user data
+                viewModel.saveUserData(
+                    uid,
+                    User(
+                        fullName = fullName,
+                        email= email,
+                        address = binding.etAddress.text.toString(),
+                        phoneNumber = binding.etPhoneNumber.text.toString(),
+                    )
+                )
+
+                // Send order of motorcycle
                 viewModel.sendOrderMotorcycle(
                     uid,
                     MotorcycleOrderDetails(
@@ -165,6 +179,7 @@ class CheckoutActivity : AppCompatActivity() {
                 }
                 is Resource.Success -> {
                     uid = it.data?.uid ?: ""
+                    email = it.data?.email ?: ""
                 }
                 is Resource.Error -> {
 
@@ -188,27 +203,14 @@ class CheckoutActivity : AppCompatActivity() {
                         "Order Received",
                         "Your order for ${userData?.motorcycleName} is now being processed. Thank you for trusting us!"
                     )
+
+                    finish()
                 }
                 is Resource.Error -> {
 
                 }
             }
         }
-
-        viewModel.listState.observe(this) {
-            when (it) {
-                is Resource.Loading -> {
-
-                }
-                is Resource.Success -> {
-                    Log.d("TAG TEST", "observeData: ${it.data?.get(0)?.motorcycleName}")
-                }
-                is Resource.Error -> {
-                    Log.d("TAG TEST", "observeData: ${it.message}")
-                }
-            }
-        }
-
 
     }
 

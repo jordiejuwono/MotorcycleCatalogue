@@ -36,6 +36,9 @@ class MotorcycleRepositoryImpl @Inject constructor(
     override suspend fun saveUserPhoto(userUid: String, imageUri: Uri): Flow<Resource<String>> =
         firebaseDataSource.saveUserPhoto(userUid, imageUri)
 
+    override suspend fun fetchUserPhoto(userUid: String): Flow<Resource<Uri>> =
+        firebaseDataSource.fetchUserPhoto(userUid)
+
     override suspend fun sendMotorcycleOrder(
         userReference: String,
         motorcycle: MotorcycleOrderDetails

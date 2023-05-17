@@ -84,4 +84,10 @@ object UseCaseModule {
         return CancelMotorcycleOrderUseCase(repository)
     }
 
+    @Provides
+    @Singleton
+    fun provideFetchUserPhotoUseCase(repository: MotorcycleRepository): FetchUserPhotoUseCase {
+        return FetchUserPhotoUseCase(repository)
+    }
+
 }

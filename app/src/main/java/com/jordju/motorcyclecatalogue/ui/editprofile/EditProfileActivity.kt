@@ -1,13 +1,19 @@
 package com.jordju.motorcyclecatalogue.ui.editprofile
 
+import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import com.bumptech.glide.Glide
 import com.jordju.core.data.Resource
 import com.jordju.core.data.model.User
 import com.jordju.motorcyclecatalogue.databinding.ActivityEditProfileBinding
+import com.jordju.motorcyclecatalogue.utils.uriToFile
 import dagger.hilt.android.AndroidEntryPoint
+import java.io.File
 
 @AndroidEntryPoint
 class EditProfileActivity : AppCompatActivity() {
@@ -17,6 +23,9 @@ class EditProfileActivity : AppCompatActivity() {
 
     private var userUid: String = ""
     private var emailAddress: String = ""
+
+    private var getFile: File? = null
+    private var selectedImage: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,8 +52,33 @@ class EditProfileActivity : AppCompatActivity() {
         viewModel.getUserFullData()
     }
 
+    private val launcherIntentGallery = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == RESULT_OK) run {
+            selectedImage = result.data?.data as Uri
+            val myFile = uriToFile(selectedImage!!, this)
+            getFile = myFile
+            binding.ivProfilePicture.setImageURI(selectedImage)
+        }
+    }
+
+    private fun startGallery() {
+        val intent = Intent()
+        intent.action = Intent.ACTION_GET_CONTENT
+        intent.type = "image/*"
+        val chooser = Intent.createChooser(intent, "Choose a Picture")
+        launcherIntentGallery.launch(chooser)
+    }
+
     private fun editProfileData() {
         binding.btnEditProfile.setOnClickListener {
+            // Update profile picture
+            if (selectedImage != null) {
+                viewModel.saveProfilePicture(userUid, selectedImage!!)
+            }
+
+            // Update user data
             if (binding.etFullName.text?.isNotEmpty() == true) {
                 viewModel.saveUserData(
                     userUid,
@@ -59,6 +93,9 @@ class EditProfileActivity : AppCompatActivity() {
                 Toast.makeText(this, "Full Name field cannot be empty!", Toast.LENGTH_SHORT).show()
             }
         }
+        binding.ivProfilePicture.setOnClickListener {
+            startGallery()
+        }
     }
 
     private fun observeData() {
@@ -70,6 +107,7 @@ class EditProfileActivity : AppCompatActivity() {
                 is Resource.Success -> {
                     userUid = it.data?.uid ?: ""
                     emailAddress = it.data?.email.toString()
+                    viewModel.fetchUserPhoto(it.data?.uid ?: "")
                 }
                 is Resource.Error -> {
 
@@ -85,6 +123,24 @@ class EditProfileActivity : AppCompatActivity() {
                 is Resource.Success -> {
                     Toast.makeText(this, "Update profile success!", Toast.LENGTH_SHORT).show()
                     finish()
+                }
+                is Resource.Error -> {
+
+                }
+            }
+        }
+
+        viewModel.photoState.observe(this) {
+            when(it) {
+                is Resource.Loading -> {
+
+                }
+                is Resource.Success -> {
+                    if (it.data != null) {
+                        Glide.with(this)
+                            .load(it.data)
+                            .into(binding.ivProfilePicture)
+                    }
                 }
                 is Resource.Error -> {
 

@@ -55,9 +55,10 @@ object ViewModelModule {
     fun provideProfileViewModel(
         profileUserUseCase: GetCurrentUserUseCase,
         getUserFullDataUseCase: GetUserFullDataUseCase,
-        logoutUserUseCase: LogoutUserUseCase
+        logoutUserUseCase: LogoutUserUseCase,
+        fetchUserPhotoUseCase: FetchUserPhotoUseCase
     ): ProfileViewModel {
-        return ProfileViewModel(profileUserUseCase, getUserFullDataUseCase, logoutUserUseCase)
+        return ProfileViewModel(profileUserUseCase, getUserFullDataUseCase, logoutUserUseCase, fetchUserPhotoUseCase)
     }
 
     @Provides
@@ -74,19 +75,21 @@ object ViewModelModule {
         currentUserUseCase: GetCurrentUserUseCase,
         saveUserDataUseCase: SaveUserDataUseCase,
         getUserFullDataUseCase: GetUserFullDataUseCase,
+        saveProfilePictureUseCase: SaveProfilePictureUseCase,
+        fetchUserPhotoUseCase: FetchUserPhotoUseCase
     ): EditProfileViewModel {
-        return EditProfileViewModel(currentUserUseCase, saveUserDataUseCase, getUserFullDataUseCase)
+        return EditProfileViewModel(currentUserUseCase, saveUserDataUseCase, getUserFullDataUseCase, saveProfilePictureUseCase, fetchUserPhotoUseCase)
     }
 
     @Provides
     @ViewModelScoped
     fun provideCheckoutViewModel(
         getUserFullDataUseCase: GetUserFullDataUseCase,
-        sendDataToTopicUseCase: SendDataToTopicUseCase,
         currentUserUseCase: GetCurrentUserUseCase,
-        sendMotorcycleOrderUseCase: SendMotorcycleOrderUseCase
+        sendMotorcycleOrderUseCase: SendMotorcycleOrderUseCase,
+        saveUserDataUseCase: SaveUserDataUseCase
     ): CheckoutViewModel {
-        return CheckoutViewModel(getUserFullDataUseCase, sendDataToTopicUseCase, currentUserUseCase, sendMotorcycleOrderUseCase)
+        return CheckoutViewModel(getUserFullDataUseCase, currentUserUseCase, sendMotorcycleOrderUseCase, saveUserDataUseCase)
     }
 
     @Provides

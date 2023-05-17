@@ -1,5 +1,6 @@
 package com.jordju.motorcyclecatalogue.ui.home.transaction.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
@@ -58,10 +59,11 @@ class TransactionAdapter(private val onClickListener: OnItemClick) :
     }
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
-        holder.bind(differ.currentList[position])
-        holder.itemView.setOnClickListener {
-            onClickListener.onClick(differ.currentList[position])
-        }
+        val itemList = differ.currentList
+            holder.bind(itemList[position])
+            holder.itemView.setOnClickListener {
+                onClickListener.onClick(itemList[position])
+            }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {

@@ -25,6 +25,7 @@ interface FirebaseDataSource {
     suspend fun registerUser(email: String, password: String): Flow<Resource<FirebaseUser?>>
     suspend fun saveUserData(userReference: String, user: User): Flow<Resource<Boolean>>
     suspend fun saveUserPhoto(userUid: String, imageUri: Uri): Flow<Resource<String>>
+    suspend fun fetchUserPhoto(userUid: String): Flow<Resource<Uri>>
     suspend fun getUserFullData(): Flow<Resource<User?>>
     suspend fun sendMotorcycleOrder(
         userReference: String,
@@ -116,6 +117,25 @@ class FirebaseDataSourceImpl @Inject constructor(private val auth: FirebaseAuth)
                 .putFile(imageUri).addOnCompleteListener {
                     if (it.isSuccessful) {
                         trySend(Resource.Success(it.result.storage.path))
+                    } else {
+                        trySend(Resource.Error(it.exception?.message))
+                    }
+                }
+                .addOnFailureListener {
+                    trySend(Resource.Error(it.message))
+                }
+
+            awaitClose { this.cancel() }
+        }
+    }
+
+    override suspend fun fetchUserPhoto(userUid: String): Flow<Resource<Uri>> {
+        return callbackFlow {
+            trySend(Resource.Loading())
+            FirebaseStorage.getInstance().getReference("users/$userUid").downloadUrl
+                .addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        trySend(Resource.Success(it.result))
                     } else {
                         trySend(Resource.Error(it.exception?.message))
                     }

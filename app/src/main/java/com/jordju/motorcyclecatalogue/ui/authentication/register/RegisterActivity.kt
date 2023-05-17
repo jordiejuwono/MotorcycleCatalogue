@@ -23,6 +23,7 @@ import com.jordju.core.data.model.User
 import com.jordju.motorcyclecatalogue.R
 import com.jordju.motorcyclecatalogue.databinding.ActivityRegisterBinding
 import com.jordju.motorcyclecatalogue.ui.authentication.login.LoginActivity
+import com.jordju.motorcyclecatalogue.utils.uriToFile
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 import java.io.FileOutputStream
@@ -37,7 +38,6 @@ class RegisterActivity : AppCompatActivity() {
     companion object {
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
         private const val REQUEST_CODE_PERMISSIONS = 10
-        private const val FILENAME = "dd-MMM-yyyy"
     }
 
     private lateinit var binding: ActivityRegisterBinding
@@ -71,15 +71,15 @@ class RegisterActivity : AppCompatActivity() {
         ContextCompat.checkSelfPermission(baseContext, it) == PackageManager.PERMISSION_GRANTED
     }
 
-    private fun askPermissionForCamera() {
-        if (!allPermissionsGranted()) {
-            ActivityCompat.requestPermissions(
-                this,
-                REQUIRED_PERMISSIONS,
-                REQUEST_CODE_PERMISSIONS
-            )
-        }
-    }
+//    private fun askPermissionForCamera() {
+//        if (!allPermissionsGranted()) {
+//            ActivityCompat.requestPermissions(
+//                this,
+//                REQUIRED_PERMISSIONS,
+//                REQUEST_CODE_PERMISSIONS
+//            )
+//        }
+//    }
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -97,32 +97,6 @@ class RegisterActivity : AppCompatActivity() {
                 finish()
             }
         }
-    }
-
-
-    val getTimeStamp = SimpleDateFormat(
-        FILENAME,
-        Locale.US
-    ).format(System.currentTimeMillis())
-
-    fun createCustomTempFile(context: Context): File {
-        val storageDir: File? = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        return File.createTempFile(getTimeStamp, ".jpg", storageDir)
-    }
-
-    fun uriToFile(selectedImage: Uri, context: Context): File {
-        val contentResolver: ContentResolver = context.contentResolver
-        val myFile = createCustomTempFile(context)
-
-        val inputStream = contentResolver.openInputStream(selectedImage) as InputStream
-        val outputStream: OutputStream = FileOutputStream(myFile)
-        val buf = ByteArray(1024)
-        var len: Int
-        while (inputStream.read(buf).also { len = it } > 0) outputStream.write(buf, 0, len)
-        outputStream.close()
-        inputStream.close()
-
-        return myFile
     }
 
     private val launcherIntentGallery = registerForActivityResult(
