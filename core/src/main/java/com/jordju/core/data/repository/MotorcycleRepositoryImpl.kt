@@ -39,7 +39,7 @@ class MotorcycleRepositoryImpl @Inject constructor(
     override suspend fun sendMotorcycleOrder(
         userReference: String,
         motorcycle: MotorcycleOrderDetails
-    ): Flow<Resource<String>> {
+    ): Flow<Resource<Boolean>> {
         return firebaseDataSource.sendMotorcycleOrder(userReference, motorcycle)
     }
 

@@ -183,7 +183,7 @@ class CheckoutActivity : AppCompatActivity() {
 
                     generateNotification(
                         "Order Received",
-                        "Your order for ${userData?.motorcycleName} is now being processed"
+                        "Your order for ${userData?.motorcycleName} is now being processed. Thank you for trusting us!"
                     )
                 }
                 is Resource.Error -> {

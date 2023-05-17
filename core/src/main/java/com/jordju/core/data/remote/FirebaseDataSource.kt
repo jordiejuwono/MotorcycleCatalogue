@@ -29,7 +29,7 @@ interface FirebaseDataSource {
     suspend fun sendMotorcycleOrder(
         userReference: String,
         motorcycle: MotorcycleOrderDetails
-    ): Flow<Resource<String>>
+    ): Flow<Resource<Boolean>>
     suspend fun getMotorcyclesOrder(userReference: String): Flow<Resource<List<MotorcycleOrderDetails>>>
     suspend fun cancelMotorcycleOrder(): Flow<Resource<Boolean>>
     suspend fun fetchFirebaseMessagingToken(): Flow<Resource<String>>
@@ -151,16 +151,17 @@ class FirebaseDataSourceImpl @Inject constructor(private val auth: FirebaseAuth)
     override suspend fun sendMotorcycleOrder(
         userReference: String,
         motorcycle: MotorcycleOrderDetails
-    ): Flow<Resource<String>> {
+    ): Flow<Resource<Boolean>> {
         return callbackFlow {
             trySend(Resource.Loading())
             FirebaseFirestore.getInstance().collection("orders")
                 .document(userReference)
                 .collection("orderList")
-                .add(motorcycle)
+                .document(motorcycle.uuid)
+                .set(motorcycle)
                 .addOnCompleteListener { reference ->
                     if (reference.isSuccessful) {
-                        trySend(Resource.Success(reference.result.id))
+                        trySend(Resource.Success(true))
                     } else {
                         trySend(Resource.Error(reference.exception?.message))
                     }

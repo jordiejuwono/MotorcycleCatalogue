@@ -39,10 +39,9 @@ class TransactionViewModel @Inject constructor(
 
     fun getMotorcyclesOrder(userReference: String) {
         viewModelScope.launch {
-            Log.d("TAG TEST", "getMotorcyclesOrder: ")
             getMotorcyclesOrderUseCase.execute(userReference).collect {
                 transactionListState.postValue(it)
-                Log.d("TAG TEST", "getMotorcyclesOrder: ${it.data}")
+                Log.d("TAG TEST", "getMotorcyclesOrder: $it")
             }
         }
     }

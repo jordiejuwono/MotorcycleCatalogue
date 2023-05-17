@@ -25,7 +25,7 @@ class CheckoutViewModel @Inject constructor(
 
     val userFullDataState = MutableLiveData<Resource<User?>>()
     val currentUserState = MutableLiveData<Resource<FirebaseUser?>>()
-    val sendOrderState = MutableLiveData<Resource<String>>()
+    val sendOrderState = MutableLiveData<Resource<Boolean>>()
     val listState = MutableLiveData<Resource<List<MotorcycleOrderDetails>>>()
 
     fun getUserFullData() {
