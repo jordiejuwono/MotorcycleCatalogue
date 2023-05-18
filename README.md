@@ -89,9 +89,7 @@ Given the customer click on the list
 The customer can also look at motorcycle gallery on scroll
 ```
 
-<div style="width: 300px; height: 300px;">
-    <img src="https://drive.google.com/uc?id=1VsQrsACxBwLcJBn3U_CZ0YI1sa4jHOC4">
-</div>
+![text](https://drive.google.com/uc?id=1ootwJtvLwxs4HLuC2Z_ZvSV0NnoP9gta){width=640 height=480}
 
 ### **Story: As a User, I can order a motorcycle product (with notification)**
 ### **Example Narrative**
