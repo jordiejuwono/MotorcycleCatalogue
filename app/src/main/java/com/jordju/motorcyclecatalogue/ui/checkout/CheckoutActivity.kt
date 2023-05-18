@@ -21,7 +21,6 @@ import com.jordju.core.data.model.MotorcycleOrderDetails
 import com.jordju.core.data.model.User
 import com.jordju.motorcyclecatalogue.R
 import com.jordju.motorcyclecatalogue.databinding.ActivityCheckoutBinding
-import com.jordju.motorcyclecatalogue.service.MyFirebaseMessagingService
 import com.jordju.motorcyclecatalogue.ui.home.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.NumberFormat
@@ -169,7 +168,7 @@ class CheckoutActivity : AppCompatActivity() {
         val notificationId = System.currentTimeMillis().toInt()
 
         val builder: NotificationCompat.Builder =
-            NotificationCompat.Builder(applicationContext, MyFirebaseMessagingService.CHANNEL_ID)
+            NotificationCompat.Builder(applicationContext, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_motorcycle)
                 .setContentTitle(title)
                 .setStyle(
@@ -189,8 +188,8 @@ class CheckoutActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationChannel =
                 NotificationChannel(
-                    MyFirebaseMessagingService.CHANNEL_ID,
-                    MyFirebaseMessagingService.CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH
+                    CHANNEL_ID,
+                    CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH
                 )
             notificationManager.createNotificationChannel(notificationChannel)
         }

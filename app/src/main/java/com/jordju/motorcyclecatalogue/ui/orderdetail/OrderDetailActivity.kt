@@ -3,23 +3,19 @@ package com.jordju.motorcyclecatalogue.ui.orderdetail
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.app.NotificationCompat
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.jordju.core.data.Resource
 import com.jordju.core.data.model.MotorcycleOrderDetails
 import com.jordju.motorcyclecatalogue.R
 import com.jordju.motorcyclecatalogue.databinding.ActivityOrderDetailBinding
-import com.jordju.motorcyclecatalogue.service.MyFirebaseMessagingService
 import com.jordju.motorcyclecatalogue.ui.home.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.NumberFormat
@@ -101,8 +97,9 @@ class OrderDetailActivity : AppCompatActivity() {
         val notificationId = System.currentTimeMillis().toInt()
 
         val builder: NotificationCompat.Builder =
-            NotificationCompat.Builder(applicationContext, MyFirebaseMessagingService.CHANNEL_ID)
+            NotificationCompat.Builder(applicationContext, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_motorcycle)
+                .setContentTitle(title)
                 .setStyle(NotificationCompat.BigTextStyle()
                     .setBigContentTitle(title)
                     .setSummaryText(title)
@@ -118,8 +115,8 @@ class OrderDetailActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationChannel =
                 NotificationChannel(
-                    MyFirebaseMessagingService.CHANNEL_ID,
-                    MyFirebaseMessagingService.CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH)
+                    CHANNEL_ID,
+                    CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH)
             notificationManager.createNotificationChannel(notificationChannel)
         }
 
