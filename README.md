@@ -6,7 +6,6 @@ Application to show motorcycles list and buy motorcycles
 ### **Note :**
 (Usually for best practice and security purpose we need to hide and ignore to push google-services.json that we get from Firebase because it's dangerous to push it to Version Control (because it contains alot of privacy and dangerous files to upload). But for the test and to make it easier to run the application I have included google-services.json to the BitBucket).
 <br />
-<br />
 ### **To run the application, you must use Android Studio and clone this repository:**
 - Clone the repository using git clone (git clone https://[your_user_name]@bitbucket.org/motorcyclecatalogue/motorcyclecatalogue.git or you can just download the zip file<br />
 - Open the application / repository using Android Studio<br />
@@ -142,3 +141,24 @@ The customer can cancel the order if the order is still being processed
 ```
 **App Image**<br />
 ![app_cancel](https://drive.google.com/uc?id=1dDympQTQzK383eer3Y67v5KxYbBSC11X)
+
+
+## **Technical Summaries**
+- When the application starts I use Room to pre-populate the local Database first so the list of motorcycles is ready when opening the application after Login Page.<br />
+- I use Room Local Database for pre-populate the Database with motorcycle list, Wishlist feature (additional feature with CRUD functionality).<br />
+- To seperate between business logic and presentation (UI) layer I use Dependency Injection (Hilt) with different module.
+- I also implement the application with Firebase for Authentication (Register, Login), Firestore (for saving user data and order transactions), and Storage (saving user profile picture)).<br />
+
+
+### **Additional Feature (Wishlist with CRUD Functionality)**
+### **Example Narrative**
+```
+As a customer I want to be able to save motorcycle to wishlist so I can order it later
+```
+**Scenarios (Acceptance criteria)**<br />
+```
+Given the customer has save the motorcycle to wishlist
+The customer can show the wishlist and also go to cart from the wishlist page
+```
+**App Image**<br />
+![app_favorite](https://drive.google.com/uc?id=1m5isxvXFz3_Zt78ampuOSukyUd76xt-r)
