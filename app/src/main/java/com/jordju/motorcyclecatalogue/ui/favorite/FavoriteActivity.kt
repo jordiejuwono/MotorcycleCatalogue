@@ -3,6 +3,7 @@ package com.jordju.motorcyclecatalogue.ui.favorite
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
@@ -13,7 +14,7 @@ import com.jordju.motorcyclecatalogue.R
 import com.jordju.motorcyclecatalogue.databinding.ActivityFavoriteBinding
 import com.jordju.motorcyclecatalogue.ui.checkout.CheckoutActivity
 import com.jordju.motorcyclecatalogue.ui.detail.DetailActivity
-import com.jordju.motorcyclecatalogue.ui.home.motorcyclelist.adapter.MotorcycleAdapter
+import com.jordju.motorcyclecatalogue.ui.home.motorcyclelist.adapter.FavoriteAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -22,7 +23,7 @@ class FavoriteActivity : AppCompatActivity() {
     private lateinit var binding: ActivityFavoriteBinding
 
     private val viewModel: FavoriteViewModel by viewModels()
-    private lateinit var adapter: MotorcycleAdapter
+//    private lateinit var adapter: FavoriteAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +38,7 @@ class FavoriteActivity : AppCompatActivity() {
         getData()
         setupRecyclerView()
         observeData()
+
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -49,7 +51,7 @@ class FavoriteActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        adapter = MotorcycleAdapter(object : MotorcycleAdapter.OnItemClick {
+        val adapterFavorite = FavoriteAdapter(object : FavoriteAdapter.OnItemClick {
 
             override fun onClick(motorcycle: MotorcycleEntity) {
                 val intent = Intent(this@FavoriteActivity, DetailActivity::class.java)
@@ -77,7 +79,38 @@ class FavoriteActivity : AppCompatActivity() {
         with(binding.rvFavorite) {
             layoutManager = LinearLayoutManager(this@FavoriteActivity)
             setHasFixedSize(true)
-            adapter = this@FavoriteActivity.adapter
+            adapter = adapterFavorite
+        }
+
+        viewModel.favoriteState.observe(this) {
+            when (it) {
+                is Resource.Loading -> {
+                    showLoading(true)
+                }
+                is Resource.Success -> {
+                    showLoading(false)
+                    adapterFavorite.differ.submitList(it.data)
+                }
+                is Resource.Error -> {
+                    showLoading(false)
+                }
+            }
+        }
+
+        viewModel.setStateFavorite.observe(this) {
+            when (it) {
+                is Resource.Loading -> {
+                    showLoading(true)
+                }
+                is Resource.Success -> {
+                    showLoading(false)
+                    getData()
+                    Log.d("ADAPTER ERROR", "onCreate: ${adapterFavorite.differ.currentList.size}")
+                }
+                is Resource.Error -> {
+                    showLoading(false)
+                }
+            }
         }
 
     }
@@ -86,28 +119,9 @@ class FavoriteActivity : AppCompatActivity() {
         binding.pbLoading.isVisible = isVisible
     }
 
-    private fun showNoData(isMessageVisible: Boolean) {
-        binding.tvNoData.isVisible = isMessageVisible
-        binding.tvNoData.text = "Favorite List\nis Empty"
-    }
 
     private fun observeData() {
-        viewModel.favoriteState.observe(this) {
-            when (it) {
-                is Resource.Loading -> {
-                    showNoData(false)
-                    showLoading(true)
-                }
-                is Resource.Success -> {
-                    showNoData(false)
-                    showLoading(false)
-                    adapter.differ.submitList(it.data)
-                }
-                is Resource.Error -> {
-                    showLoading(false)
-                    showNoData(false)
-                }
-            }
-        }
+
     }
 }
+

@@ -38,6 +38,9 @@ class ProfileViewModel @Inject constructor(
             viewModelScope.launch(Dispatchers.Main) {
                 try {
                     currentUserState.postValue(Resource.Success(currentUser))
+                    fetchUserPhotoUseCase.execute(currentUser?.uid ?: "").collect {
+                        photoState.postValue(it)
+                    }
                 } catch (e: Exception) {
                     currentUserState.postValue(Resource.Error(e.message.orEmpty()))
                 }

@@ -13,8 +13,8 @@ import com.jordju.motorcyclecatalogue.databinding.MotorcycleItemBinding
 import java.text.NumberFormat
 import java.util.Locale
 
-class MotorcycleAdapter(private val onClickListener: OnItemClick) :
-    RecyclerView.Adapter<MotorcycleAdapter.ListViewHolder>() {
+class FavoriteAdapter(private val onClickListener: OnItemClick) :
+    RecyclerView.Adapter<FavoriteAdapter.ListViewHolder>() {
 
     interface OnItemClick {
         fun onClick(motorcycle: MotorcycleEntity)
@@ -27,7 +27,7 @@ class MotorcycleAdapter(private val onClickListener: OnItemClick) :
             oldItem: MotorcycleEntity,
             newItem: MotorcycleEntity
         ): Boolean {
-            return oldItem.motorcycleId == newItem.motorcycleId
+            return oldItem.motorcycleName == newItem.motorcycleName
         }
 
         override fun areContentsTheSame(
@@ -40,11 +40,8 @@ class MotorcycleAdapter(private val onClickListener: OnItemClick) :
 
     val differ = AsyncListDiffer(this, differCallback)
 
-    class ListViewHolder(private val binding: MotorcycleItemBinding) :
+    class ListViewHolder(val binding: MotorcycleItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-
-        val buttonBuy = binding.btnBuy
-        val favoriteIcon = binding.ivFavorite
 
         fun bind(data: MotorcycleEntity) {
 
@@ -69,15 +66,16 @@ class MotorcycleAdapter(private val onClickListener: OnItemClick) :
     }
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
-        holder.bind(differ.currentList[position])
+        val item = differ.currentList[position]
+        holder.bind(item)
         holder.itemView.setOnClickListener {
-            onClickListener.onClick(differ.currentList[position])
+            onClickListener.onClick(item)
         }
-        holder.buttonBuy.setOnClickListener {
-            onClickListener.onCheckOutClick(differ.currentList[position])
+        holder.binding.btnBuy.setOnClickListener {
+            onClickListener.onCheckOutClick(item)
         }
-        holder.favoriteIcon.setOnClickListener {
-            onClickListener.onFavoriteClick(differ.currentList[position])
+        holder.binding.ivFavorite.setOnClickListener {
+            onClickListener.onFavoriteClick(item)
         }
     }
 

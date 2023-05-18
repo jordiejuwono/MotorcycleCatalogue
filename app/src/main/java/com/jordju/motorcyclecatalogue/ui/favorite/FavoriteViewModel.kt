@@ -8,6 +8,7 @@ import com.jordju.core.data.local.room.entity.MotorcycleEntity
 import com.jordju.core.domain.usecase.GetAllFavoriteMotorcyclesUseCase
 import com.jordju.core.domain.usecase.SetMotorcycleFavoriteStatusUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,6 +19,7 @@ class FavoriteViewModel @Inject constructor(
 ) : ViewModel() {
 
     val favoriteState = MutableLiveData<Resource<List<MotorcycleEntity>>>()
+    val setStateFavorite = MutableLiveData<Resource<Boolean>>()
 
     fun getAllFavoriteMotorcycles() {
         viewModelScope.launch {
@@ -28,8 +30,16 @@ class FavoriteViewModel @Inject constructor(
     }
 
     fun setFavoriteStatus(motorcycleId: Int, setToFavorite: Boolean) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
+            setStateFavorite.postValue(Resource.Loading())
             setMotorcycleFavoriteStatusUseCase.execute(motorcycleId, setToFavorite)
+            viewModelScope.launch(Dispatchers.Main) {
+                try {
+                    setStateFavorite.postValue(Resource.Success(true))
+                }catch (e: Exception) {
+                    setStateFavorite.postValue(Resource.Error(e.message))
+                }
+            }
         }
     }
 }

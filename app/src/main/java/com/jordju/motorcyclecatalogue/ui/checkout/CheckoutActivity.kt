@@ -170,6 +170,7 @@ class CheckoutActivity : AppCompatActivity() {
         val builder: NotificationCompat.Builder =
             NotificationCompat.Builder(applicationContext, MyFirebaseMessagingService.CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_motorcycle)
+                .setContentTitle(title)
                 .setStyle(
                     NotificationCompat.BigTextStyle()
                         .setBigContentTitle(title)

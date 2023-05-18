@@ -17,6 +17,7 @@ import com.jordju.motorcyclecatalogue.databinding.FragmentMotorcycleListBinding
 import com.jordju.motorcyclecatalogue.ui.checkout.CheckoutActivity
 import com.jordju.motorcyclecatalogue.ui.detail.DetailActivity
 import com.jordju.motorcyclecatalogue.ui.favorite.FavoriteActivity
+import com.jordju.motorcyclecatalogue.ui.home.motorcyclelist.adapter.FavoriteAdapter
 import com.jordju.motorcyclecatalogue.ui.home.motorcyclelist.adapter.MotorcycleAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
