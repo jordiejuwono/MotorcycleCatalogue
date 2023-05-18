@@ -37,10 +37,11 @@ class FavoriteActivity : AppCompatActivity() {
         setupRecyclerView()
     }
 
-    override fun onNavigateUp(): Boolean {
+    override fun onSupportNavigateUp(): Boolean {
         onBackPressedDispatcher.onBackPressed()
-        return super.onNavigateUp()
+        return super.onSupportNavigateUp()
     }
+
     private fun getData() {
         viewModel.getAllFavoriteMotorcycles()
     }

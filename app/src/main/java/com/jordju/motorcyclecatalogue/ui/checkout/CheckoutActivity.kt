@@ -5,10 +5,12 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.RemoteViews
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
@@ -88,7 +90,7 @@ class CheckoutActivity : AppCompatActivity() {
                     uid,
                     User(
                         fullName = fullName,
-                        email= email,
+                        email = email,
                         address = binding.etAddress.text.toString(),
                         phoneNumber = binding.etPhoneNumber.text.toString(),
                     )
@@ -114,33 +116,28 @@ class CheckoutActivity : AppCompatActivity() {
         }
     }
 
-    fun getRemoteView(title: String, message: String): RemoteViews {
-        val remoteView = RemoteViews("com.jordju.motorcyclecatalogue", R.layout.notif_layout)
-
-        remoteView.setTextViewText(R.id.tv_notif_title, title)
-        remoteView.setTextViewText(R.id.tv_notif_content, message)
-        remoteView.setImageViewResource(R.id.iv_notif_image, R.drawable.ic_motorcycle)
-
-        return remoteView
-    }
-
-    fun generateNotification(title: String, message: String) {
+    private fun generateNotification(title: String, message: String) {
         val intent = Intent(this, MainActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
 
-        val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT)
+        val pendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_MUTABLE)
+        } else {
+            PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT)
+        }
 
         val notificationId = System.currentTimeMillis().toInt()
 
-        var builder: NotificationCompat.Builder =
+        val builder: NotificationCompat.Builder =
             NotificationCompat.Builder(applicationContext, MyFirebaseMessagingService.CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_motorcycle)
+                .setStyle(NotificationCompat.BigTextStyle()
+                    .setBigContentTitle(title)
+                    .bigText(message))
                 .setAutoCancel(true)
                 .setVibrate(longArrayOf(1000, 1000, 1000, 1000))
                 .setOnlyAlertOnce(true)
                 .setContentIntent(pendingIntent)
-
-        builder = builder.setContent(getRemoteView(title, message))
 
         val notificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -217,5 +214,8 @@ class CheckoutActivity : AppCompatActivity() {
 
     companion object {
         const val CHECKOUT_DATA = "CHECKOUT_DATA"
+        private const val NOTIFICATION_ID = 1
+        private const val CHANNEL_ID = "channel_01"
+        private const val CHANNEL_NAME = "notification channel"
     }
 }

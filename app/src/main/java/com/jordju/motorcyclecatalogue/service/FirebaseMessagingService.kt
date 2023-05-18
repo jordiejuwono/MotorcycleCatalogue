@@ -20,7 +20,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         remoteView.setTextViewText(R.id.tv_notif_title, title)
         remoteView.setTextViewText(R.id.tv_notif_content, message)
-        remoteView.setImageViewResource(R.id.iv_notif_image, R.drawable.ic_motorcycle)
+//        remoteView.setImageViewResource(R.id.iv_notif_image, R.drawable.ic_motorcycle)
 
         return remoteView
     }

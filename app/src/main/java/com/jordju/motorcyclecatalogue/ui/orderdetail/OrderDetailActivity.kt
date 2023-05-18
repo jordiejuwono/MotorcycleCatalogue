@@ -1,17 +1,24 @@
 package com.jordju.motorcyclecatalogue.ui.orderdetail
 
+import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.RemoteViews
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.jordju.core.data.Resource
 import com.jordju.core.data.local.room.entity.MotorcycleEntity
@@ -19,6 +26,7 @@ import com.jordju.core.data.model.MotorcycleOrderDetails
 import com.jordju.motorcyclecatalogue.R
 import com.jordju.motorcyclecatalogue.databinding.ActivityOrderDetailBinding
 import com.jordju.motorcyclecatalogue.service.MyFirebaseMessagingService
+import com.jordju.motorcyclecatalogue.ui.checkout.CheckoutActivity
 import com.jordju.motorcyclecatalogue.ui.detail.DetailActivity
 import com.jordju.motorcyclecatalogue.ui.home.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -44,6 +52,7 @@ class OrderDetailActivity : AppCompatActivity() {
         bindData()
         observeData()
     }
+
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressedDispatcher.onBackPressed()
@@ -86,33 +95,28 @@ class OrderDetailActivity : AppCompatActivity() {
         }
     }
 
-    fun getRemoteView(title: String, message: String): RemoteViews {
-        val remoteView = RemoteViews("com.jordju.motorcyclecatalogue", R.layout.notif_layout)
-
-        remoteView.setTextViewText(R.id.tv_notif_title, title)
-        remoteView.setTextViewText(R.id.tv_notif_content, message)
-        remoteView.setImageViewResource(R.id.iv_notif_image, R.drawable.ic_motorcycle)
-
-        return remoteView
-    }
-
-    fun generateNotification(title: String, message: String) {
+    private fun generateNotification(title: String, message: String) {
         val intent = Intent(this, MainActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
 
-        val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT)
+        val pendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_MUTABLE)
+        } else {
+            PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT)
+        }
 
         val notificationId = System.currentTimeMillis().toInt()
 
-        var builder: NotificationCompat.Builder =
+        val builder: NotificationCompat.Builder =
             NotificationCompat.Builder(applicationContext, MyFirebaseMessagingService.CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_motorcycle)
+                .setStyle(NotificationCompat.BigTextStyle()
+                    .setBigContentTitle(title)
+                    .bigText(message))
                 .setAutoCancel(true)
                 .setVibrate(longArrayOf(1000, 1000, 1000, 1000))
                 .setOnlyAlertOnce(true)
                 .setContentIntent(pendingIntent)
-
-        builder = builder.setContent(getRemoteView(title, message))
 
         val notificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -155,6 +159,12 @@ class OrderDetailActivity : AppCompatActivity() {
                         intent.getParcelableExtra<MotorcycleOrderDetails>(ORDER_DETAIL)
                     }
 
+//                    sendNotification(
+//                        "Motorcycle Catalogue",
+//                        "Order Canceled",
+//                        "Your order for ${userData?.motorcycleName} has been canceled"
+//                    )
+
                     generateNotification(
                         title = "Order Canceled",
                         message = "Your order for ${userData?.motorcycleName} has been canceled",
@@ -169,8 +179,20 @@ class OrderDetailActivity : AppCompatActivity() {
         }
     }
 
+    private fun checkPermission(permission: String): Boolean {
+        return ContextCompat.checkSelfPermission(
+            this,
+            permission
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
+
+
 
     companion object {
         const val ORDER_DETAIL = "ORDER_DETAIL"
+        private const val NOTIFICATION_ID = 1
+        private const val CHANNEL_ID = "channel_01"
+        private const val CHANNEL_NAME = "notification channel"
     }
 }
