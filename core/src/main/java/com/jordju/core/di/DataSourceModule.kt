@@ -6,6 +6,7 @@ import com.jordju.core.data.local.LocalDataSourceImpl
 import com.jordju.core.data.local.room.dao.MotorcycleDao
 import com.jordju.core.data.remote.FirebaseDataSource
 import com.jordju.core.data.remote.FirebaseDataSourceImpl
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,18 +15,12 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object DataSourceModule {
+abstract class DataSourceModule {
 
-    @Singleton
-    @Provides
-    fun provideFirebaseDataSource(auth: FirebaseAuth): FirebaseDataSource {
-        return FirebaseDataSourceImpl(auth)
-    }
+    @Binds
+    abstract fun bindFirebaseDataSource(firebaseDataSourceImpl: FirebaseDataSourceImpl) : FirebaseDataSource
 
-    @Singleton
-    @Provides
-    fun provideRemoteDataSource(dao: MotorcycleDao): LocalDataSource {
-        return LocalDataSourceImpl(dao)
-    }
+    @Binds
+    abstract fun bindLocalDataSource(localDataSourceImpl: LocalDataSourceImpl) : LocalDataSource
 
 }

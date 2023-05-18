@@ -1,20 +1,9 @@
 package com.jordju.motorcyclecatalogue.utils
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
 import android.content.ContentResolver
 import android.content.Context
-import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.os.Environment
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NotificationCompat
-import com.jordju.motorcyclecatalogue.R
-import com.jordju.motorcyclecatalogue.service.MyFirebaseMessagingService
-import com.jordju.motorcyclecatalogue.ui.authentication.register.RegisterActivity
-import com.jordju.motorcyclecatalogue.ui.home.MainActivity
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
@@ -22,6 +11,8 @@ import java.io.OutputStream
 import java.text.SimpleDateFormat
 import java.util.*
 
+
+// Use case if we want to use Camera for profile picture
 private const val FILENAME = "dd-MMM-yyyy"
 
 val getTimeStamp = SimpleDateFormat(

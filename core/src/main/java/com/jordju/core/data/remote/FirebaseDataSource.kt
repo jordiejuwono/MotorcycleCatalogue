@@ -31,14 +31,23 @@ interface FirebaseDataSource {
         userReference: String,
         motorcycle: MotorcycleOrderDetails
     ): Flow<Resource<Boolean>>
+
     suspend fun getMotorcyclesOrder(userReference: String): Flow<Resource<List<MotorcycleOrderDetails>>>
-    suspend fun cancelMotorcycleOrder(userReference: String, orderId: String): Flow<Resource<Boolean>>
+    suspend fun cancelMotorcycleOrder(
+        userReference: String,
+        orderId: String
+    ): Flow<Resource<Boolean>>
+
     suspend fun fetchFirebaseMessagingToken(): Flow<Resource<String>>
     fun getCurrentUser(): FirebaseUser?
     fun logoutUser()
 }
 
-class FirebaseDataSourceImpl @Inject constructor(private val auth: FirebaseAuth) :
+class FirebaseDataSourceImpl @Inject constructor(
+    private val auth: FirebaseAuth,
+    private val fireStore: FirebaseFirestore,
+    private val storage: FirebaseStorage,
+) :
     FirebaseDataSource {
     override suspend fun signInUser(
         email: String,
@@ -85,7 +94,7 @@ class FirebaseDataSourceImpl @Inject constructor(private val auth: FirebaseAuth)
     override suspend fun saveUserData(userReference: String, user: User): Flow<Resource<Boolean>> {
         return callbackFlow {
             trySend(Resource.Loading())
-            FirebaseFirestore.getInstance().collection("users")
+            fireStore.collection("users")
                 .document(userReference)
                 .set(user)
                 .addOnCompleteListener {
@@ -105,7 +114,7 @@ class FirebaseDataSourceImpl @Inject constructor(private val auth: FirebaseAuth)
     override suspend fun saveUserPhoto(userUid: String, imageUri: Uri): Flow<Resource<String>> {
         return callbackFlow {
             trySend(Resource.Loading())
-            FirebaseStorage.getInstance().getReference("users/$userUid")
+            storage.getReference("users/$userUid")
                 .putFile(imageUri).addOnCompleteListener {
                     if (it.isSuccessful) {
                         trySend(Resource.Success(it.result.storage.path))
@@ -124,7 +133,7 @@ class FirebaseDataSourceImpl @Inject constructor(private val auth: FirebaseAuth)
     override suspend fun fetchUserPhoto(userUid: String): Flow<Resource<Uri>> {
         return callbackFlow {
             trySend(Resource.Loading())
-            FirebaseStorage.getInstance().getReference("users/$userUid").downloadUrl
+            storage.getReference("users/$userUid").downloadUrl
                 .addOnCompleteListener {
                     if (it.isSuccessful) {
                         trySend(Resource.Success(it.result))
@@ -143,7 +152,7 @@ class FirebaseDataSourceImpl @Inject constructor(private val auth: FirebaseAuth)
     override suspend fun getUserFullData(): Flow<Resource<User?>> {
         return callbackFlow {
             trySend(Resource.Loading())
-            FirebaseFirestore.getInstance().collection("users")
+            fireStore.collection("users")
                 .document(auth.currentUser?.uid ?: "").get()
                 .addOnSuccessListener { document ->
                     try {
@@ -166,7 +175,7 @@ class FirebaseDataSourceImpl @Inject constructor(private val auth: FirebaseAuth)
     ): Flow<Resource<Boolean>> {
         return callbackFlow {
             trySend(Resource.Loading())
-            FirebaseFirestore.getInstance().collection("orders")
+            fireStore.collection("orders")
                 .document(userReference)
                 .collection("orderList")
                 .document(motorcycle.uuid)
@@ -190,7 +199,7 @@ class FirebaseDataSourceImpl @Inject constructor(private val auth: FirebaseAuth)
     ): Flow<Resource<List<MotorcycleOrderDetails>>> {
         return callbackFlow {
             trySend(Resource.Loading())
-            FirebaseFirestore.getInstance().collection("orders")
+            fireStore.collection("orders")
                 .document(userReference)
                 .collection("orderList")
                 .get()
@@ -208,10 +217,13 @@ class FirebaseDataSourceImpl @Inject constructor(private val auth: FirebaseAuth)
         }
     }
 
-    override suspend fun cancelMotorcycleOrder(userReference: String, orderId: String): Flow<Resource<Boolean>> {
+    override suspend fun cancelMotorcycleOrder(
+        userReference: String,
+        orderId: String
+    ): Flow<Resource<Boolean>> {
         return callbackFlow {
             trySend(Resource.Loading())
-            FirebaseFirestore.getInstance().collection("orders")
+            fireStore.collection("orders")
                 .document(userReference)
                 .collection("orderList")
                 .document(orderId)
