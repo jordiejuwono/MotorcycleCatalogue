@@ -73,9 +73,14 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun registerUser() {
         binding.btnRegister.setOnClickListener {
+            binding.etName.error = null
             binding.etEmail.error = null
             binding.etPassword.error = null
 
+            if (binding.etName.text.isEmpty()) {
+                binding.etName.error = getString(R.string.text_full_name_empty)
+                binding.etName.requestFocus()
+            }
             if (!(Patterns.EMAIL_ADDRESS.matcher(binding.etEmail.text).matches())) {
                 binding.etEmail.error = getString(R.string.text_enter_valid_email)
                 binding.etEmail.requestFocus()

@@ -36,6 +36,7 @@ class FavoriteActivity : AppCompatActivity() {
 
         getData()
         setupRecyclerView()
+        observeData()
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -79,7 +80,6 @@ class FavoriteActivity : AppCompatActivity() {
             adapter = this@FavoriteActivity.adapter
         }
 
-        observeData(adapter)
     }
 
     private fun showLoading(isVisible: Boolean) {
@@ -91,7 +91,7 @@ class FavoriteActivity : AppCompatActivity() {
         binding.tvNoData.text = "Favorite List\nis Empty"
     }
 
-    private fun observeData(adapter: MotorcycleAdapter) {
+    private fun observeData() {
         viewModel.favoriteState.observe(this) {
             when (it) {
                 is Resource.Loading -> {

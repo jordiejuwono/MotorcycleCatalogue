@@ -29,6 +29,7 @@ class ProfileFragment : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
+    private var uid: String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,15 +43,23 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         editProfileData()
+        refreshData()
         getData()
-        logoutUser()
         observeData()
+        logoutUser()
     }
 
     override fun onResume() {
         super.onResume()
         getData()
         observeData()
+    }
+
+    private fun refreshData() {
+        binding.srlRefresh.setOnRefreshListener {
+            getData()
+            binding.srlRefresh.isRefreshing = false
+        }
     }
 
     private fun editProfileData() {
@@ -82,6 +91,7 @@ class ProfileFragment : Fragment() {
 
                 }
                 is Resource.Success -> {
+                    uid = data.data?.uid ?: ""
                     viewModel.fetchUserPhoto(data.data?.uid ?: "")
                 }
                 is Resource.Error -> {
@@ -130,7 +140,11 @@ class ProfileFragment : Fragment() {
 
                 }
                 is Resource.Success -> {
-                    Toast.makeText(requireContext(), getString(R.string.text_logout_success), Toast.LENGTH_SHORT)
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.text_logout_success),
+                        Toast.LENGTH_SHORT
+                    )
                         .show()
                     val intent = Intent(requireContext(), LoginActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK

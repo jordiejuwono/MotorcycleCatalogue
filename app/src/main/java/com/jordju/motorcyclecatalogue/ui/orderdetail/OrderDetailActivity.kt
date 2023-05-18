@@ -76,6 +76,7 @@ class OrderDetailActivity : AppCompatActivity() {
             tvAddress.text = userData?.addressTo
             tvStatus.text = userData?.status
             tvOrderedBy.text = userData?.orderedBy
+            tvPaymentType.text = userData?.paymentMethod
             btnCancel.setOnClickListener {
                 viewModel.cancelOrder(
                     uid,
@@ -163,14 +164,6 @@ class OrderDetailActivity : AppCompatActivity() {
             }
         }
     }
-
-    private fun checkPermission(permission: String): Boolean {
-        return ContextCompat.checkSelfPermission(
-            this,
-            permission
-        ) == PackageManager.PERMISSION_GRANTED
-    }
-
 
 
 
