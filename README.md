@@ -9,7 +9,7 @@ Application to show motorcycles list and buy motorcycles
 ### **To run the application, you must use Android Studio and clone this repository:**
 - Clone the repository using git clone (git clone https://[your_user_name]@bitbucket.org/motorcyclecatalogue/motorcyclecatalogue.git or you can just download the zip file<br />
 - Open the application / repository using Android Studio<br />
-- You can run using emulator or connect with your Android phone (Developer mode must be enabled first), you can also build apk to test the application (Build - Build Bundle(s) / APK(s) - Build APK(s)) and download it on your phone<br />
+- You can run using emulator (sometimes the notification doesn't show up on emulator and require to wipe the emulator data) or connect with your Android phone (Developer mode must be enabled first), you can also build apk to test the application (Build - Build Bundle(s) / APK(s) - Build APK(s)) and download it on your phone<br />
 
 ## **Tech Stack Used**
 - Kotlin<br />
