@@ -35,7 +35,7 @@ class EditProfileActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         supportActionBar?.apply {
-            title = "Edit Profile"
+            title = getString(R.string.title_edit_profile)
             setDisplayHomeAsUpEnabled(true)
         }
 
@@ -141,7 +141,11 @@ class EditProfileActivity : AppCompatActivity() {
                     showSendLoading(true)
                 }
                 is Resource.Success -> {
-
+                    if (selectedImage == null) {
+                        showSendLoading(false)
+                        Toast.makeText(this, getString(R.string.text_update_success), Toast.LENGTH_SHORT).show()
+                        finish()
+                    }
                 }
                 is Resource.Error -> {
                     showSendLoading(false)

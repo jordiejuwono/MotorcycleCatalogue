@@ -64,4 +64,5 @@
     <string name="text_order_failed">Failed to order motorcycle, please check your connection</string>
     <string name="text_fail_update_data">Failed to update profile data</string>
     <string name="text_cancel_order_failed">Failed to cancel order, please check your connection</string>
+    <string name="title_edit_profile">Edit Profile</string>
 </resources>
