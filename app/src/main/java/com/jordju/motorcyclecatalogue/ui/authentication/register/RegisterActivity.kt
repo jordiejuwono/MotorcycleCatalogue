@@ -24,11 +24,6 @@ import java.io.File
 @AndroidEntryPoint
 class RegisterActivity : AppCompatActivity() {
 
-    companion object {
-        private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
-        private const val REQUEST_CODE_PERMISSIONS = 10
-    }
-
     private lateinit var binding: ActivityRegisterBinding
     private val viewModel: RegisterViewModel by viewModels()
 

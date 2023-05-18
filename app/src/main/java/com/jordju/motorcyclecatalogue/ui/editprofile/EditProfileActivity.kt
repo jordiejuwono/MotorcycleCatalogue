@@ -74,26 +74,32 @@ class EditProfileActivity : AppCompatActivity() {
 
     private fun editProfileData() {
         binding.btnEditProfile.setOnClickListener {
-            // Update profile picture
-            if (selectedImage != null) {
-                viewModel.saveProfilePicture(userUid, selectedImage!!)
+            binding.etFullName.error = null
+            if (binding.etFullName.text?.isEmpty() == true) {
+                binding.etFullName.error = getString(R.string.text_full_name_empty)
             }
 
-            // Update user data
-            if (binding.etFullName.text?.isNotEmpty() == true) {
-                viewModel.saveUserData(
-                    userUid,
-                    User(
-                        fullName = binding.etFullName.text.toString(),
-                        email = emailAddress,
-                        address = binding.etAddress.text.toString(),
-                        virtualAccount = binding.etVirtualAccount.text.toString(),
-                        phoneNumber = binding.etPhoneNumber.text.toString(),
+            if (binding.etFullName.error == null) {
+                // Update profile picture
+                if (selectedImage != null) {
+                    viewModel.saveProfilePicture(userUid, selectedImage!!)
+                }
+
+                // Update user data
+                if (binding.etFullName.text?.isNotEmpty() == true) {
+                    viewModel.saveUserData(
+                        userUid,
+                        User(
+                            fullName = binding.etFullName.text.toString(),
+                            email = emailAddress,
+                            address = binding.etAddress.text.toString(),
+                            virtualAccount = binding.etVirtualAccount.text.toString(),
+                            phoneNumber = binding.etPhoneNumber.text.toString(),
+                        )
                     )
-                )
-            } else {
-                Toast.makeText(this, getString(R.string.text_name_cannot_empty), Toast.LENGTH_SHORT).show()
+                }
             }
+
         }
         binding.ivProfilePicture.setOnClickListener {
             startGallery()
