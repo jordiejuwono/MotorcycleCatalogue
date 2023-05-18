@@ -159,6 +159,7 @@ class EditProfileActivity : AppCompatActivity() {
                     binding.etFullName.setText(it.data?.fullName)
                     binding.etAddress.setText(it.data?.address)
                     binding.etPhoneNumber.setText(it.data?.phoneNumber)
+                    binding.etVirtualAccount.setText(it.data?.virtualAccount)
                 }
                 is Resource.Error -> {
 

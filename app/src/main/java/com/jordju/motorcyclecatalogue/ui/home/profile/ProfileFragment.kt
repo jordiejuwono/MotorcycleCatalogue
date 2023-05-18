@@ -44,12 +44,13 @@ class ProfileFragment : Fragment() {
         editProfileData()
         getData()
         logoutUser()
-        bindData()
+        observeData()
     }
 
     override fun onResume() {
         super.onResume()
         getData()
+        observeData()
     }
 
     private fun editProfileData() {
@@ -74,7 +75,7 @@ class ProfileFragment : Fragment() {
         binding.pbLoading.isVisible = isVisible
     }
 
-    private fun bindData() {
+    private fun observeData() {
         viewModel.currentUserState.observe(viewLifecycleOwner) { data ->
             when (data) {
                 is Resource.Loading -> {

@@ -78,7 +78,7 @@ class CheckoutActivity : AppCompatActivity() {
                 .into(ivMotorcycle)
             tvName.text = userData?.motorcycleName
             tvPrice.text = formatRupiah.format(userData?.price)
-            rgPayment.setOnCheckedChangeListener(object: OnCheckedChangeListener {
+            rgPayment.setOnCheckedChangeListener(object : OnCheckedChangeListener {
                 override fun onCheckedChanged(group: RadioGroup?, id: Int) {
                     if (id == R.id.rb_cod) {
                         paymentMethod = PAYMENT_COD
@@ -91,11 +91,30 @@ class CheckoutActivity : AppCompatActivity() {
 
             })
             btnBuy.setOnClickListener {
+                binding.etPhoneNumber.error = null
+                binding.etAddress.error = null
+                binding.etVirtualAccount.error = null
+
+                if ((binding.etPhoneNumber.text?.length ?: 0) < 10) {
+                    binding.etPhoneNumber.error = "Enter a valid phone number"
+                    binding.etAddress.requestFocus()
+                }
+                if (binding.etAddress.text?.isEmpty() == true) {
+                    binding.etAddress.error = "Address field cannot be empty"
+                    binding.etAddress.requestFocus()
+                }
                 if (binding.rgPayment.checkedRadioButtonId == R.id.rb_virtual_account &&
                     ((binding.etVirtualAccount.text?.isEmpty() == true) ||
                             ((binding.etVirtualAccount.text?.length
                                 ?: 0) < 8))
                 ) {
+                    binding.etVirtualAccount.error = getString(R.string.text_valid_virtual_account)
+                    binding.etVirtualAccount.requestFocus()
+                }
+
+                if (binding.etPhoneNumber.error == null &&
+                        binding.etAddress.error == null &&
+                        binding.etVirtualAccount.error == null) {
                     // Auto update the user data
                     viewModel.saveUserData(
                         uid,
@@ -125,9 +144,8 @@ class CheckoutActivity : AppCompatActivity() {
                             status = getString(R.string.text_in_process)
                         )
                     )
-                } else {
-                    Toast.makeText(this@CheckoutActivity, getString(R.string.text_valid_virtual_account), Toast.LENGTH_SHORT).show()
                 }
+
             }
         }
     }

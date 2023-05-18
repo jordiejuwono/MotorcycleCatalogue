@@ -3,6 +3,7 @@ package com.jordju.motorcyclecatalogue.ui.authentication.login
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Patterns
 import android.widget.Toast
 import androidx.activity.viewModels
 import com.jordju.core.data.Resource
@@ -41,9 +42,27 @@ class LoginActivity : AppCompatActivity() {
 
     private fun loginUser() {
         binding.btnLogin.setOnClickListener {
-            if (binding.etEmail.text.isEmpty() || binding.etPassword.text.isEmpty()) {
-                Toast.makeText(this, getString(R.string.text_email_password_cannot_empty), Toast.LENGTH_SHORT).show()
-            } else {
+            binding.etEmail.error = null
+            binding.etPassword.error = null
+
+            if (!(Patterns.EMAIL_ADDRESS.matcher(binding.etEmail.text).matches())) {
+                binding.etEmail.error = getString(R.string.text_enter_valid_email)
+                binding.etEmail.requestFocus()
+            }
+            if (binding.etEmail.text.isEmpty()) {
+                binding.etEmail.error = getString(R.string.text_email_cannot_empty)
+                binding.etEmail.requestFocus()
+            }
+            if (binding.etPassword.text.length < 4) {
+                binding.etPassword.error = getString(R.string.text_password_less_4)
+                binding.etEmail.requestFocus()
+            }
+            if (binding.etPassword.text.isEmpty()) {
+                binding.etPassword.error = getString(R.string.text_password_empty)
+                binding.etEmail.requestFocus()
+            }
+
+            if (binding.etPassword.error == null && binding.etEmail.error == null) {
                 viewModel.loginUser(
                     email = binding.etEmail.text.toString(),
                     password = binding.etPassword.text.toString(),

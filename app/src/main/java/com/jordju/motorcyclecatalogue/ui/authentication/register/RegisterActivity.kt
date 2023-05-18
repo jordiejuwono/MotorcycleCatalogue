@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Patterns
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -48,17 +49,6 @@ class RegisterActivity : AppCompatActivity() {
         observeData()
     }
 
-    private fun checkPermissions(permission: String): Boolean {
-        return ContextCompat.checkSelfPermission(
-            this,
-            permission
-        ) == PackageManager.PERMISSION_GRANTED
-    }
-
-    private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
-        ContextCompat.checkSelfPermission(baseContext, it) == PackageManager.PERMISSION_GRANTED
-    }
-
     private val launcherIntentGallery = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
@@ -88,10 +78,33 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun registerUser() {
         binding.btnRegister.setOnClickListener {
-            viewModel.registerUser(
-                email = binding.etEmail.text.toString(),
-                password = binding.etPassword.text.toString(),
-            )
+            binding.etEmail.error = null
+            binding.etPassword.error = null
+
+            if (!(Patterns.EMAIL_ADDRESS.matcher(binding.etEmail.text).matches())) {
+                binding.etEmail.error = getString(R.string.text_enter_valid_email)
+                binding.etEmail.requestFocus()
+            }
+            if (binding.etEmail.text.isEmpty()) {
+                binding.etEmail.error = getString(R.string.text_email_cannot_empty)
+                binding.etEmail.requestFocus()
+            }
+            if (binding.etPassword.text.length < 4) {
+                binding.etPassword.error = getString(R.string.text_password_less_4)
+                binding.etEmail.requestFocus()
+            }
+            if (binding.etPassword.text.isEmpty()) {
+                binding.etPassword.error = getString(R.string.text_password_empty)
+                binding.etEmail.requestFocus()
+            }
+
+            if (binding.etPassword.error == null && binding.etEmail.error == null) {
+                viewModel.registerUser(
+                    email = binding.etEmail.text.toString(),
+                    password = binding.etPassword.text.toString(),
+                )
+            }
+
         }
     }
 

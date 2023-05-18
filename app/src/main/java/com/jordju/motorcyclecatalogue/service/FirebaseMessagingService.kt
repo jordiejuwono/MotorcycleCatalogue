@@ -14,16 +14,16 @@ import com.jordju.motorcyclecatalogue.R
 import com.jordju.motorcyclecatalogue.ui.home.MainActivity
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
-
-    fun getRemoteView(title: String, message: String): RemoteViews {
-        val remoteView = RemoteViews("com.jordju.motorcyclecatalogue", R.layout.notif_layout)
-
-        remoteView.setTextViewText(R.id.tv_notif_title, title)
-        remoteView.setTextViewText(R.id.tv_notif_content, message)
-//        remoteView.setImageViewResource(R.id.iv_notif_image, R.drawable.ic_motorcycle)
-
-        return remoteView
-    }
+//
+//    fun getRemoteView(title: String, message: String): RemoteViews {
+//        val remoteView = RemoteViews("com.jordju.motorcyclecatalogue", R.layout.notif_layout)
+//
+//        remoteView.setTextViewText(R.id.tv_notif_title, title)
+//        remoteView.setTextViewText(R.id.tv_notif_content, message)
+////        remoteView.setImageViewResource(R.id.iv_notif_image, R.drawable.ic_motorcycle)
+//
+//        return remoteView
+//    }
 
     fun generateNotification(title: String, message: String) {
         val intent = Intent(this, MainActivity::class.java)
@@ -39,7 +39,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 .setOnlyAlertOnce(true)
                 .setContentIntent(pendingIntent)
 
-        builder = builder.setContent(getRemoteView(title, message))
+//        builder = builder.setContent(getRemoteView(title, message))
 
         val notificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager

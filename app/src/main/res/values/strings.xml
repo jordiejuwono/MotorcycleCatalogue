@@ -55,4 +55,8 @@
     <string name="text_logout_success">Logout Successful!</string>
     <string name="text_no_transaction">No transactions yet</string>
     <string name="text_order_cancel">Order Canceled</string>
+    <string name="text_enter_valid_email">Enter a valid email address</string>
+    <string name="text_email_cannot_empty">Email field cannot be empty</string>
+    <string name="text_password_less_4">Password must be at least 4 digit</string>
+    <string name="text_password_empty">Password field cannot be empty</string>
 </resources>
