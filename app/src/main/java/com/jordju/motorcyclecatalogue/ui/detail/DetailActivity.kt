@@ -1,16 +1,19 @@
 package com.jordju.motorcyclecatalogue.ui.detail
 
+import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Html
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
-import com.jordju.core.data.local.entity.MotorcycleEntity
+import com.jordju.core.data.local.room.entity.MotorcycleEntity
 import com.jordju.motorcyclecatalogue.R
 import com.jordju.motorcyclecatalogue.databinding.ActivityDetailBinding
+import com.jordju.motorcyclecatalogue.ui.checkout.CheckoutActivity
 import com.jordju.motorcyclecatalogue.ui.detail.slideradapter.ImageData
 import com.jordju.motorcyclecatalogue.ui.detail.slideradapter.SliderAdapter
 import java.text.NumberFormat
@@ -49,7 +52,9 @@ class DetailActivity : AppCompatActivity() {
         }
         adapter = SliderAdapter(listImage)
 
-        binding.viewPager.adapter = adapter
+        binding.viewPager.apply {
+            adapter = this@DetailActivity.adapter
+        }
         dots = ArrayList()
         setIndicator(imageUrlList)
 
@@ -85,7 +90,7 @@ class DetailActivity : AppCompatActivity() {
                 dots[i].text = Html.fromHtml("&#9679")
             }
             dots[i].textSize = 18f
-            dots[i].setPadding(2, 0, 2, 0)
+            dots[i].setPadding(3, 0, 3, 0)
             binding.dotsIndicator.addView(dots[i])
         }
     }
@@ -114,6 +119,11 @@ class DetailActivity : AppCompatActivity() {
                 getString(R.string.displacement_format, userData?.displacement)
             tvMaxPower.text = getString(R.string.max_power_format, userData?.maximumPower)
             tvPrice.text = formatRupiah.format(userData?.price)
+            btnBuy.setOnClickListener {
+                val intent = Intent(this@DetailActivity, CheckoutActivity::class.java)
+                intent.putExtra(CheckoutActivity.CHECKOUT_DATA, userData)
+                startActivity(intent)
+            }
         }
 
     }

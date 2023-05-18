@@ -1,6 +1,6 @@
 package com.jordju.core.utils
 
-import com.jordju.core.data.local.entity.MotorcycleEntity
+import com.jordju.core.data.local.room.entity.MotorcycleEntity
 import com.jordju.core.data.model.Motorcycle
 
 object InitialDataSource {
@@ -22,6 +22,7 @@ object InitialDataSource {
                 oilTankCapacity = 0.65,
                 maximumPower = 8.89,
                 price = 18850000.0,
+                isFavorite = false,
             ),
             MotorcycleEntity(
                 motorcycleId = 1,
@@ -39,6 +40,7 @@ object InitialDataSource {
                 oilTankCapacity = 0.65,
                 maximumPower = 9.0,
                 price = 22680000.0,
+                isFavorite = false,
             ),
             MotorcycleEntity(
                 motorcycleId = 2,
@@ -56,6 +58,7 @@ object InitialDataSource {
                 maximumPower = 11.1,
                 oilTankCapacity = 0.8,
                 price = 24400000.0,
+                isFavorite = false,
             ),
             MotorcycleEntity(
                 motorcycleId = 3,
@@ -73,6 +76,7 @@ object InitialDataSource {
                 category = "Street",
                 oilTankCapacity = 1.15,
                 price = 29280000.0,
+                isFavorite = false,
             ),
             MotorcycleEntity(
                 motorcycleId = 4,
@@ -90,6 +94,7 @@ object InitialDataSource {
                 maximumPower = 9.92,
                 oilTankCapacity = 0.7,
                 price = 20220000.0,
+                isFavorite = false,
             ),
             MotorcycleEntity(
                 motorcycleId = 5,
@@ -107,6 +112,7 @@ object InitialDataSource {
                 maximumPower = 20.78,
                 oilTankCapacity = 0.0,
                 price = 47500000.0,
+                isFavorite = false,
             ),
             MotorcycleEntity(
                 motorcycleId = 6,
@@ -124,6 +130,7 @@ object InitialDataSource {
                 maximumPower = 15.8,
                 oilTankCapacity = 0.8,
                 price = 32620000.0,
+                isFavorite = false,
             ),
             MotorcycleEntity(
                 motorcycleId = 7,
@@ -141,6 +148,7 @@ object InitialDataSource {
                 maximumPower = 13.0,
                 oilTankCapacity = 1.0,
                 price = 35730000.0,
+                isFavorite = false,
             ),
             MotorcycleEntity(
                 motorcycleId = 8,
@@ -158,6 +166,7 @@ object InitialDataSource {
                 category = "Scooter",
                 oilTankCapacity = 5.5,
                 price = 29410000.0,
+                isFavorite = false,
             ),
         )
     }

@@ -5,9 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jordju.core.data.Resource
-import com.jordju.core.data.local.entity.MotorcycleEntity
+import com.jordju.core.data.local.room.entity.MotorcycleEntity
 import com.jordju.core.domain.usecase.FetchFirebaseMessagingTokenUseCase
 import com.jordju.core.domain.usecase.GetAllMotorcyclesUseCase
+import com.jordju.core.domain.usecase.SetMotorcycleFavoriteStatusUseCase
 import com.jordju.core.domain.usecase.SubscribeToTopicUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
@@ -18,6 +19,7 @@ import javax.inject.Inject
 class MotorcycleListViewModel @Inject constructor(
     private val useCase: GetAllMotorcyclesUseCase,
     private val fcmTokenUseCase: FetchFirebaseMessagingTokenUseCase,
+    private val setMotorcycleFavoriteStatusUseCase: SetMotorcycleFavoriteStatusUseCase
 ) : ViewModel() {
 
     val motorcyclesState = MutableLiveData<Resource<List<MotorcycleEntity>>>()
@@ -38,7 +40,11 @@ class MotorcycleListViewModel @Inject constructor(
         }
     }
 
-
+    fun setFavoriteStatus(motorcycleId: Int, setToFavorite: Boolean) {
+        viewModelScope.launch {
+            setMotorcycleFavoriteStatusUseCase.execute(motorcycleId, setToFavorite)
+        }
+    }
 
 
 }

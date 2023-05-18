@@ -5,6 +5,8 @@ import com.jordju.motorcyclecatalogue.ui.authentication.login.LoginViewModel
 import com.jordju.motorcyclecatalogue.ui.authentication.register.RegisterViewModel
 import com.jordju.motorcyclecatalogue.ui.checkout.CheckoutViewModel
 import com.jordju.motorcyclecatalogue.ui.editprofile.EditProfileViewModel
+import com.jordju.motorcyclecatalogue.ui.favorite.FavoriteActivity
+import com.jordju.motorcyclecatalogue.ui.favorite.FavoriteViewModel
 import com.jordju.motorcyclecatalogue.ui.home.motorcyclelist.MotorcycleListViewModel
 import com.jordju.motorcyclecatalogue.ui.home.profile.ProfileViewModel
 import com.jordju.motorcyclecatalogue.ui.home.transaction.TransactionViewModel
@@ -45,9 +47,10 @@ object ViewModelModule {
     @ViewModelScoped
     fun provideMotorcycleListViewModel(
         motorcyclesUseCase: GetAllMotorcyclesUseCase,
-        fetchFirebaseMessagingTokenUseCase: FetchFirebaseMessagingTokenUseCase
+        fetchFirebaseMessagingTokenUseCase: FetchFirebaseMessagingTokenUseCase,
+        setMotorcycleFavoriteStatusUseCase: SetMotorcycleFavoriteStatusUseCase
     ): MotorcycleListViewModel {
-        return MotorcycleListViewModel(motorcyclesUseCase, fetchFirebaseMessagingTokenUseCase)
+        return MotorcycleListViewModel(motorcyclesUseCase, fetchFirebaseMessagingTokenUseCase, setMotorcycleFavoriteStatusUseCase)
     }
 
     @Provides
@@ -108,5 +111,14 @@ object ViewModelModule {
         getCurrentUserUseCase: GetCurrentUserUseCase
     ): OrderDetailViewModel {
         return OrderDetailViewModel(cancelMotorcycleOrderUseCase, getCurrentUserUseCase)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideFavoriteViewModel(
+        getAllFavoriteMotorcyclesUseCase: GetAllFavoriteMotorcyclesUseCase,
+        setMotorcycleFavoriteStatusUseCase: SetMotorcycleFavoriteStatusUseCase
+    ): FavoriteViewModel {
+        return FavoriteViewModel(getAllFavoriteMotorcyclesUseCase, setMotorcycleFavoriteStatusUseCase)
     }
 }

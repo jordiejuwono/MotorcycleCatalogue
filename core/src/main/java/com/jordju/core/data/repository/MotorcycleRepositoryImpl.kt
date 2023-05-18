@@ -4,7 +4,7 @@ import android.net.Uri
 import com.google.firebase.auth.FirebaseUser
 import com.jordju.core.data.Resource
 import com.jordju.core.data.local.LocalDataSource
-import com.jordju.core.data.local.entity.MotorcycleEntity
+import com.jordju.core.data.local.room.entity.MotorcycleEntity
 import com.jordju.core.data.model.MotorcycleOrderDetails
 import com.jordju.core.data.model.User
 import com.jordju.core.data.remote.FirebaseDataSource
@@ -99,8 +99,16 @@ class MotorcycleRepositoryImpl @Inject constructor(
             }
     }
 
-    override suspend fun insertMotorcycleToWishlist(motorcycle: MotorcycleEntity) {
-        return localDataSource.insertMotorcycleToWishlist(motorcycle)
+    override suspend fun getAllFavoriteMotorcycles(): Flow<Resource<List<MotorcycleEntity>>> = flow {
+        emit(Resource.Loading())
+
+        localDataSource.getAllFavoriteMotorcycles()
+            .catch {
+                emit(Resource.Error(it.message))
+            }
+            .collect {
+                emit(Resource.Success(it))
+            }
     }
 
     override suspend fun deleteMotorcycleFromWishlist(motorcycle: MotorcycleEntity) {
@@ -109,5 +117,9 @@ class MotorcycleRepositoryImpl @Inject constructor(
 
     override fun isMotorcycleAlreadyExists(id: Int): Flow<Boolean> {
         return localDataSource.isMotorcycleAlreadyExists(id)
+    }
+
+    override suspend fun setMotorcycleFavoriteStatus(motorcycleId: Int, setToFavorite: Boolean) {
+        return localDataSource.setMotorcycleFavoriteStatus(motorcycleId, setToFavorite)
     }
 }

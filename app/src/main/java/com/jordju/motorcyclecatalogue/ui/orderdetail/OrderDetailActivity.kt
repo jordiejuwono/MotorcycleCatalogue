@@ -14,7 +14,7 @@ import androidx.activity.viewModels
 import androidx.core.app.NotificationCompat
 import com.bumptech.glide.Glide
 import com.jordju.core.data.Resource
-import com.jordju.core.data.local.entity.MotorcycleEntity
+import com.jordju.core.data.local.room.entity.MotorcycleEntity
 import com.jordju.core.data.model.MotorcycleOrderDetails
 import com.jordju.motorcyclecatalogue.R
 import com.jordju.motorcyclecatalogue.databinding.ActivityOrderDetailBinding

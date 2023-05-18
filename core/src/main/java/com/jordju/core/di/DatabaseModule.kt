@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.jordju.core.data.local.room.MotorcycleDao
+import com.jordju.core.data.local.room.dao.MotorcycleDao
 import com.jordju.core.data.local.room.MotorcycleDatabase
 import com.jordju.core.utils.InitialDataSource
 import dagger.Module
@@ -14,9 +14,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import java.util.concurrent.Executors
 import javax.inject.Singleton
 
 @Module

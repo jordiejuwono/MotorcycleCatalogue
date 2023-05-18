@@ -90,4 +90,16 @@ object UseCaseModule {
         return FetchUserPhotoUseCase(repository)
     }
 
+    @Provides
+    @Singleton
+    fun provideSetMotorcycleFavoriteStatusUseCase(repository: MotorcycleRepository): SetMotorcycleFavoriteStatusUseCase {
+        return SetMotorcycleFavoriteStatusUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetAllFavoriteMotorcycles(repository: MotorcycleRepository): GetAllFavoriteMotorcyclesUseCase {
+        return GetAllFavoriteMotorcyclesUseCase(repository)
+    }
+
 }

@@ -17,7 +17,7 @@ import com.bumptech.glide.Glide
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.type.DateTime
 import com.jordju.core.data.Resource
-import com.jordju.core.data.local.entity.MotorcycleEntity
+import com.jordju.core.data.local.room.entity.MotorcycleEntity
 import com.jordju.core.data.model.MotorcycleOrderDetails
 import com.jordju.core.data.model.User
 import com.jordju.motorcyclecatalogue.R

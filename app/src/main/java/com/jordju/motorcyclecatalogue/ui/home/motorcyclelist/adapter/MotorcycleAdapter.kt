@@ -3,11 +3,13 @@ package com.jordju.motorcyclecatalogue.ui.home.motorcyclelist.adapter
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.jordju.core.data.local.entity.MotorcycleEntity
+import com.jordju.core.data.local.room.entity.MotorcycleEntity
+import com.jordju.motorcyclecatalogue.R
 import com.jordju.motorcyclecatalogue.databinding.MotorcycleItemBinding
 import java.text.NumberFormat
 import java.util.Locale
@@ -18,6 +20,7 @@ class MotorcycleAdapter(private val onClickListener: OnItemClick) :
     interface OnItemClick {
         fun onClick(motorcycle: MotorcycleEntity)
         fun onCheckOutClick(motorcycle: MotorcycleEntity)
+        fun onFavoriteClick(motorcycle: MotorcycleEntity)
     }
 
     private val differCallback = object : DiffUtil.ItemCallback<MotorcycleEntity>() {
@@ -42,6 +45,7 @@ class MotorcycleAdapter(private val onClickListener: OnItemClick) :
         RecyclerView.ViewHolder(binding.root) {
 
         val buttonBuy = binding.btnBuy
+        val favoriteIcon = binding.ivFavorite
 
         fun bind(data: MotorcycleEntity) {
 
@@ -56,6 +60,11 @@ class MotorcycleAdapter(private val onClickListener: OnItemClick) :
                 tvName.text = data.motorcycleName
                 tvCategory.text = data.category
                 tvPrice.text = price
+                if (data.isFavorite) {
+                    ivFavorite.setColorFilter(ContextCompat.getColor(itemView.context, R.color.red))
+                } else {
+                    ivFavorite.setColorFilter(ContextCompat.getColor(itemView.context, R.color.light_grey))
+                }
             }
         }
     }
@@ -67,6 +76,9 @@ class MotorcycleAdapter(private val onClickListener: OnItemClick) :
         }
         holder.buttonBuy.setOnClickListener {
             onClickListener.onCheckOutClick(differ.currentList[position])
+        }
+        holder.favoriteIcon.setOnClickListener {
+            onClickListener.onFavoriteClick(differ.currentList[position])
         }
     }
 

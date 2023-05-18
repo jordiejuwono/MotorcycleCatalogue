@@ -3,7 +3,7 @@ package com.jordju.core.domain.repository
 import android.net.Uri
 import com.google.firebase.auth.FirebaseUser
 import com.jordju.core.data.Resource
-import com.jordju.core.data.local.entity.MotorcycleEntity
+import com.jordju.core.data.local.room.entity.MotorcycleEntity
 import com.jordju.core.data.model.MotorcycleOrderDetails
 import com.jordju.core.data.model.User
 import kotlinx.coroutines.flow.Flow
@@ -27,7 +27,8 @@ interface MotorcycleRepository {
 
     // local
     fun getAllMotorcycles(): Flow<Resource<List<MotorcycleEntity>>>
-    suspend fun insertMotorcycleToWishlist(motorcycle: MotorcycleEntity)
+    suspend fun getAllFavoriteMotorcycles(): Flow<Resource<List<MotorcycleEntity>>>
     suspend fun deleteMotorcycleFromWishlist(motorcycle: MotorcycleEntity)
     fun isMotorcycleAlreadyExists(id: Int): Flow<Boolean>
+    suspend fun setMotorcycleFavoriteStatus(motorcycleId: Int, setToFavorite: Boolean)
 }

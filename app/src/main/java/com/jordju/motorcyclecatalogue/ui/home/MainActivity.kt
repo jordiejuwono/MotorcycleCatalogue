@@ -20,6 +20,8 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        supportActionBar?.hide()
+
         if (savedInstanceState == null) {
             replaceContainerFragment(MotorcycleListFragment())
         }

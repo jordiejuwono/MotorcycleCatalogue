@@ -11,10 +11,11 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jordju.core.data.Resource
-import com.jordju.core.data.local.entity.MotorcycleEntity
+import com.jordju.core.data.local.room.entity.MotorcycleEntity
 import com.jordju.motorcyclecatalogue.databinding.FragmentMotorcycleListBinding
 import com.jordju.motorcyclecatalogue.ui.checkout.CheckoutActivity
 import com.jordju.motorcyclecatalogue.ui.detail.DetailActivity
+import com.jordju.motorcyclecatalogue.ui.favorite.FavoriteActivity
 import com.jordju.motorcyclecatalogue.ui.home.MainActivity
 import com.jordju.motorcyclecatalogue.ui.home.motorcyclelist.adapter.MotorcycleAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,6 +40,7 @@ class MotorcycleListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         getData()
+        intentToFavorite()
         setupRecyclerView()
     }
 
@@ -62,6 +64,23 @@ class MotorcycleListFragment : Fragment() {
                 startActivity(intent)
             }
 
+            override fun onFavoriteClick(motorcycle: MotorcycleEntity) {
+                if (motorcycle.isFavorite) {
+                    viewModel.setFavoriteStatus(
+                        motorcycleId = motorcycle.motorcycleId,
+                        setToFavorite = false,
+                    )
+                    Toast.makeText(requireContext(), "Removed from Favorite!", Toast.LENGTH_SHORT).show()
+                } else {
+                    viewModel.setFavoriteStatus(
+                        motorcycleId = motorcycle.motorcycleId,
+                        setToFavorite = true,
+                    )
+                    Toast.makeText(requireContext(), "Added to Favorite!", Toast.LENGTH_SHORT).show()
+                }
+
+            }
+
         })
 
         with(binding.rvMotorcycles) {
@@ -71,6 +90,12 @@ class MotorcycleListFragment : Fragment() {
         }
 
         observeData(motorcycleAdapter)
+    }
+
+    private fun intentToFavorite() {
+        binding.ivFavorite.setOnClickListener {
+            startActivity(Intent(requireContext(), FavoriteActivity::class.java))
+        }
     }
 
     private fun showLoading(isVisible: Boolean) {
