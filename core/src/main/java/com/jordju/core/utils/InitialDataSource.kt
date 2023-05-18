@@ -1,7 +1,6 @@
 package com.jordju.core.utils
 
 import com.jordju.core.data.local.room.entity.MotorcycleEntity
-import com.jordju.core.data.model.Motorcycle
 
 object InitialDataSource {
     fun getMotorcycleList(): List<MotorcycleEntity> {

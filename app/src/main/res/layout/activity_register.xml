@@ -12,7 +12,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="20dp">
 
@@ -21,7 +21,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="Register"
+                android:text="@string/text_register"
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="30sp"
@@ -37,6 +37,7 @@
                 <ImageView
                     android:id="@+id/iv_profile_picture"
                     android:layout_width="150dp"
+                    android:contentDescription="@string/description_profile_picture"
                     android:layout_height="170dp"
                     android:layout_gravity="center"
                     android:scaleType="centerCrop"
@@ -49,53 +50,62 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
-                android:text="Full Name"
+                android:text="@string/text_full_name"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/et_name"
+                android:hint="@string/hint_enter_name"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:importantForAutofill="no"
+                android:inputType="text" />
 
             <TextView
                 android:id="@+id/tv_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:text="Email"
+                android:text="@string/text_email"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/et_email"
+                android:hint="@string/hint_enter_email"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:importantForAutofill="no"
+                android:inputType="textEmailAddress" />
 
             <TextView
                 android:id="@+id/tv_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:text="Password"
+                android:text="@string/text_password"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/et_password"
+                android:hint="@string/hint_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:importantForAutofill="no" />
 
             <Button
                 android:id="@+id/btn_register"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textStyle="bold"
                 android:layout_marginTop="40dp"
-                android:text="Register" />
+                android:text="@string/text_register" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -107,13 +117,13 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Already have an account? " />
+                    android:text="@string/text_already_have_account" />
 
                 <TextView
                     android:id="@+id/tv_login"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Login"
+                    android:text="@string/text_login"
                     android:textColor="#2a9df4"
                     android:textStyle="bold" />
 

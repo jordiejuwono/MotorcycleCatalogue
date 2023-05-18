@@ -5,8 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.core.view.ContentInfoCompat.Flags
 import com.jordju.core.data.Resource
+import com.jordju.motorcyclecatalogue.R
 import com.jordju.motorcyclecatalogue.databinding.ActivityLoginBinding
 import com.jordju.motorcyclecatalogue.ui.authentication.register.RegisterActivity
 import com.jordju.motorcyclecatalogue.ui.home.MainActivity
@@ -41,10 +41,14 @@ class LoginActivity : AppCompatActivity() {
 
     private fun loginUser() {
         binding.btnLogin.setOnClickListener {
-            viewModel.loginUser(
-                email = binding.etEmail.text.toString(),
-                password = binding.etPassword.text.toString(),
-            )
+            if (binding.etEmail.text.isEmpty() || binding.etPassword.text.isEmpty()) {
+                Toast.makeText(this, getString(R.string.text_email_password_cannot_empty), Toast.LENGTH_SHORT).show()
+            } else {
+                viewModel.loginUser(
+                    email = binding.etEmail.text.toString(),
+                    password = binding.etPassword.text.toString(),
+                )
+            }
         }
     }
 

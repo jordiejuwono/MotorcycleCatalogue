@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.jordju.core.data.Resource
 import com.jordju.core.data.local.room.entity.MotorcycleEntity
 import com.jordju.core.data.model.MotorcycleOrderDetails
+import com.jordju.motorcyclecatalogue.R
 import com.jordju.motorcyclecatalogue.databinding.FragmentTransactionBinding
 import com.jordju.motorcyclecatalogue.ui.home.transaction.adapter.TransactionAdapter
 import com.jordju.motorcyclecatalogue.ui.orderdetail.OrderDetailActivity
@@ -77,7 +78,7 @@ class TransactionFragment : Fragment() {
 
     private fun showNoData(isNoData: Boolean) {
         binding.apply {
-            tvNoData.text = "No transactions yet"
+            tvNoData.text = getString(R.string.text_no_transaction)
             tvNoData.isVisible = isNoData
         }
     }

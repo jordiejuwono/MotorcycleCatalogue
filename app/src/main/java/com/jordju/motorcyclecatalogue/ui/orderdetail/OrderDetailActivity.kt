@@ -1,33 +1,23 @@
 package com.jordju.motorcyclecatalogue.ui.orderdetail
 
-import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.BitmapFactory
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.RemoteViews
-import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.jordju.core.data.Resource
-import com.jordju.core.data.local.room.entity.MotorcycleEntity
 import com.jordju.core.data.model.MotorcycleOrderDetails
 import com.jordju.motorcyclecatalogue.R
 import com.jordju.motorcyclecatalogue.databinding.ActivityOrderDetailBinding
 import com.jordju.motorcyclecatalogue.service.MyFirebaseMessagingService
-import com.jordju.motorcyclecatalogue.ui.checkout.CheckoutActivity
-import com.jordju.motorcyclecatalogue.ui.detail.DetailActivity
 import com.jordju.motorcyclecatalogue.ui.home.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.NumberFormat
@@ -112,6 +102,7 @@ class OrderDetailActivity : AppCompatActivity() {
                 .setSmallIcon(R.drawable.ic_motorcycle)
                 .setStyle(NotificationCompat.BigTextStyle()
                     .setBigContentTitle(title)
+                    .setSummaryText(title)
                     .bigText(message))
                 .setAutoCancel(true)
                 .setVibrate(longArrayOf(1000, 1000, 1000, 1000))
@@ -119,7 +110,7 @@ class OrderDetailActivity : AppCompatActivity() {
                 .setContentIntent(pendingIntent)
 
         val notificationManager =
-            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            getSystemService(NOTIFICATION_SERVICE) as NotificationManager
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationChannel =
@@ -158,15 +149,9 @@ class OrderDetailActivity : AppCompatActivity() {
                     } else {
                         intent.getParcelableExtra<MotorcycleOrderDetails>(ORDER_DETAIL)
                     }
-
-//                    sendNotification(
-//                        "Motorcycle Catalogue",
-//                        "Order Canceled",
-//                        "Your order for ${userData?.motorcycleName} has been canceled"
-//                    )
-
+                    
                     generateNotification(
-                        title = "Order Canceled",
+                        title = getString(R.string.text_order_cancel),
                         message = "Your order for ${userData?.motorcycleName} has been canceled",
                     )
 

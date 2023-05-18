@@ -1,23 +1,16 @@
 package com.jordju.motorcyclecatalogue.ui.authentication.register
 
 import android.Manifest
-import android.content.ContentResolver
-import android.content.Context
 import android.content.Intent
 import android.content.Intent.ACTION_GET_CONTENT
 import android.content.pm.PackageManager
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Environment
-import android.view.LayoutInflater
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.jordju.core.data.Resource
 import com.jordju.core.data.model.User
 import com.jordju.motorcyclecatalogue.R
@@ -26,11 +19,6 @@ import com.jordju.motorcyclecatalogue.ui.authentication.login.LoginActivity
 import com.jordju.motorcyclecatalogue.utils.uriToFile
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
-import java.io.FileOutputStream
-import java.io.InputStream
-import java.io.OutputStream
-import java.text.SimpleDateFormat
-import java.util.*
 
 @AndroidEntryPoint
 class RegisterActivity : AppCompatActivity() {
@@ -69,34 +57,6 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
         ContextCompat.checkSelfPermission(baseContext, it) == PackageManager.PERMISSION_GRANTED
-    }
-
-//    private fun askPermissionForCamera() {
-//        if (!allPermissionsGranted()) {
-//            ActivityCompat.requestPermissions(
-//                this,
-//                REQUIRED_PERMISSIONS,
-//                REQUEST_CODE_PERMISSIONS
-//            )
-//        }
-//    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == REQUEST_CODE_PERMISSIONS) {
-            if (!allPermissionsGranted()) {
-                Toast.makeText(
-                    this,
-                    "Tidak mendapatkan permission untuk mengakses Camera",
-                    Toast.LENGTH_SHORT
-                ).show()
-                finish()
-            }
-        }
     }
 
     private val launcherIntentGallery = registerForActivityResult(
@@ -141,21 +101,7 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun onProfileClick() {
         binding.ivProfilePicture.setOnClickListener {
-            val dialog = BottomSheetDialog(this)
-            val view = LayoutInflater.from(this).inflate(R.layout.bottom_image_picker, null)
-
-            val btnCamera = view.findViewById<LinearLayout>(R.id.ll_camera)
-            val btnGallery = view.findViewById<LinearLayout>(R.id.ll_gallery)
-
-            btnCamera.setOnClickListener {
-                Toast.makeText(this, "Camera", Toast.LENGTH_SHORT).show()
-            }
-            btnGallery.setOnClickListener {
-                startGallery()
-            }
-
-            dialog.setContentView(view)
-            dialog.show()
+            startGallery()
         }
     }
 
@@ -179,7 +125,7 @@ class RegisterActivity : AppCompatActivity() {
                             selectedImage!!
                         )
                     }
-                    Toast.makeText(this, "Register User Successful!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.text_register_success), Toast.LENGTH_SHORT).show()
                     val intent = Intent(this, LoginActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                     startActivity(intent)

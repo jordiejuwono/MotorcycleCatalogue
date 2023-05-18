@@ -12,11 +12,11 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jordju.core.data.Resource
 import com.jordju.core.data.local.room.entity.MotorcycleEntity
+import com.jordju.motorcyclecatalogue.R
 import com.jordju.motorcyclecatalogue.databinding.FragmentMotorcycleListBinding
 import com.jordju.motorcyclecatalogue.ui.checkout.CheckoutActivity
 import com.jordju.motorcyclecatalogue.ui.detail.DetailActivity
 import com.jordju.motorcyclecatalogue.ui.favorite.FavoriteActivity
-import com.jordju.motorcyclecatalogue.ui.home.MainActivity
 import com.jordju.motorcyclecatalogue.ui.home.motorcyclelist.adapter.MotorcycleAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -70,13 +70,13 @@ class MotorcycleListFragment : Fragment() {
                         motorcycleId = motorcycle.motorcycleId,
                         setToFavorite = false,
                     )
-                    Toast.makeText(requireContext(), "Removed from Favorite!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), getString(R.string.text_remove_favorite), Toast.LENGTH_SHORT).show()
                 } else {
                     viewModel.setFavoriteStatus(
                         motorcycleId = motorcycle.motorcycleId,
                         setToFavorite = true,
                     )
-                    Toast.makeText(requireContext(), "Added to Favorite!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), getString(R.string.text_add_favorite), Toast.LENGTH_SHORT).show()
                 }
 
             }

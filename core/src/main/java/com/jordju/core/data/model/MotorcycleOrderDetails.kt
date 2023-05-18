@@ -12,6 +12,8 @@ data class MotorcycleOrderDetails(
     val orderedBy: String = "",
     val phoneNumber: String = "",
     val addressTo: String = "",
+    val paymentMethod: String = "",
+    val virtualAccount: String = "",
     val orderedAt: String = "",
     val status: String = "",
 ): Parcelable

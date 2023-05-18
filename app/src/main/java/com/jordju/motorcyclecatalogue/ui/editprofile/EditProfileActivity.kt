@@ -10,6 +10,7 @@ import androidx.activity.viewModels
 import com.bumptech.glide.Glide
 import com.jordju.core.data.Resource
 import com.jordju.core.data.model.User
+import com.jordju.motorcyclecatalogue.R
 import com.jordju.motorcyclecatalogue.databinding.ActivityEditProfileBinding
 import com.jordju.motorcyclecatalogue.utils.uriToFile
 import dagger.hilt.android.AndroidEntryPoint
@@ -86,11 +87,12 @@ class EditProfileActivity : AppCompatActivity() {
                         fullName = binding.etFullName.text.toString(),
                         email = emailAddress,
                         address = binding.etAddress.text.toString(),
+                        virtualAccount = binding.etVirtualAccount.text.toString(),
                         phoneNumber = binding.etPhoneNumber.text.toString(),
                     )
                 )
             } else {
-                Toast.makeText(this, "Full Name field cannot be empty!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.text_name_cannot_empty), Toast.LENGTH_SHORT).show()
             }
         }
         binding.ivProfilePicture.setOnClickListener {
@@ -121,7 +123,7 @@ class EditProfileActivity : AppCompatActivity() {
 
                 }
                 is Resource.Success -> {
-                    Toast.makeText(this, "Update profile success!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.text_update_success), Toast.LENGTH_SHORT).show()
                     finish()
                 }
                 is Resource.Error -> {

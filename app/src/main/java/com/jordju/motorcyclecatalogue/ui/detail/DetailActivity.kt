@@ -85,9 +85,9 @@ class DetailActivity : AppCompatActivity() {
         for (i in imageUrlList.indices) {
             dots.add(TextView(this))
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                dots[i].text = Html.fromHtml("&#9679", Html.FROM_HTML_MODE_LEGACY).toString()
+                dots[i].text = Html.fromHtml(getString(R.string.icon_dot), Html.FROM_HTML_MODE_LEGACY).toString()
             } else {
-                dots[i].text = Html.fromHtml("&#9679")
+                dots[i].text = Html.fromHtml(getString(R.string.icon_dot))
             }
             dots[i].textSize = 18f
             dots[i].setPadding(3, 0, 3, 0)

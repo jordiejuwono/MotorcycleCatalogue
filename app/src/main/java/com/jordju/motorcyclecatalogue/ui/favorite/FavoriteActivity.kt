@@ -9,6 +9,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jordju.core.data.Resource
 import com.jordju.core.data.local.room.entity.MotorcycleEntity
+import com.jordju.motorcyclecatalogue.R
 import com.jordju.motorcyclecatalogue.databinding.ActivityFavoriteBinding
 import com.jordju.motorcyclecatalogue.ui.checkout.CheckoutActivity
 import com.jordju.motorcyclecatalogue.ui.detail.DetailActivity
@@ -30,7 +31,7 @@ class FavoriteActivity : AppCompatActivity() {
 
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
-            title = "Favorite"
+            title = getString(R.string.text_favorite)
         }
 
         getData()
@@ -66,7 +67,7 @@ class FavoriteActivity : AppCompatActivity() {
                     motorcycleId = motorcycle.motorcycleId,
                     setToFavorite = false,
                 )
-                Toast.makeText(this@FavoriteActivity, "Removed from Favorite!", Toast.LENGTH_SHORT)
+                Toast.makeText(this@FavoriteActivity, getString(R.string.text_remove_favorite), Toast.LENGTH_SHORT)
                     .show()
             }
 

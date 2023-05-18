@@ -129,7 +129,7 @@ class ProfileFragment : Fragment() {
 
                 }
                 is Resource.Success -> {
-                    Toast.makeText(requireContext(), "Logout Successful!", Toast.LENGTH_SHORT)
+                    Toast.makeText(requireContext(), getString(R.string.text_logout_success), Toast.LENGTH_SHORT)
                         .show()
                     val intent = Intent(requireContext(), LoginActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK

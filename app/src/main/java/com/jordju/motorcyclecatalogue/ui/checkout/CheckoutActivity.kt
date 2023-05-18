@@ -3,21 +3,17 @@ package com.jordju.motorcyclecatalogue.ui.checkout
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.content.Context
 import android.content.Intent
-import android.graphics.BitmapFactory
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.RemoteViews
+import android.widget.RadioGroup
+import android.widget.RadioGroup.OnCheckedChangeListener
+import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import com.bumptech.glide.Glide
-import com.google.firebase.messaging.FirebaseMessagingService
-import com.google.type.DateTime
 import com.jordju.core.data.Resource
 import com.jordju.core.data.local.room.entity.MotorcycleEntity
 import com.jordju.core.data.model.MotorcycleOrderDetails
@@ -25,12 +21,9 @@ import com.jordju.core.data.model.User
 import com.jordju.motorcyclecatalogue.R
 import com.jordju.motorcyclecatalogue.databinding.ActivityCheckoutBinding
 import com.jordju.motorcyclecatalogue.service.MyFirebaseMessagingService
-import com.jordju.motorcyclecatalogue.ui.detail.DetailActivity
 import com.jordju.motorcyclecatalogue.ui.home.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.NumberFormat
-import java.time.LocalDate
-import java.time.LocalDateTime
 import java.util.*
 
 @AndroidEntryPoint
@@ -42,6 +35,7 @@ class CheckoutActivity : AppCompatActivity() {
     private var uid: String = ""
     private var fullName: String = ""
     private var email: String = ""
+    private var paymentMethod = PAYMENT_VA
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,7 +43,7 @@ class CheckoutActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         supportActionBar?.apply {
-            title = "Checkout"
+            title = getString(R.string.text_checkout)
             setDisplayHomeAsUpEnabled(true)
         }
 
@@ -84,34 +78,56 @@ class CheckoutActivity : AppCompatActivity() {
                 .into(ivMotorcycle)
             tvName.text = userData?.motorcycleName
             tvPrice.text = formatRupiah.format(userData?.price)
+            rgPayment.setOnCheckedChangeListener(object: OnCheckedChangeListener {
+                override fun onCheckedChanged(group: RadioGroup?, id: Int) {
+                    if (id == R.id.rb_cod) {
+                        paymentMethod = PAYMENT_COD
+                        binding.etVirtualAccount.visibility = View.GONE
+                    } else {
+                        paymentMethod = PAYMENT_VA
+                        binding.etVirtualAccount.visibility = View.VISIBLE
+                    }
+                }
+
+            })
             btnBuy.setOnClickListener {
-                // Auto update the user data
-                viewModel.saveUserData(
-                    uid,
-                    User(
-                        fullName = fullName,
-                        email = email,
-                        address = binding.etAddress.text.toString(),
-                        phoneNumber = binding.etPhoneNumber.text.toString(),
+                if (binding.rgPayment.checkedRadioButtonId == R.id.rb_virtual_account &&
+                    ((binding.etVirtualAccount.text?.isEmpty() == true) ||
+                            ((binding.etVirtualAccount.text?.length
+                                ?: 0) < 8))
+                ) {
+                    // Auto update the user data
+                    viewModel.saveUserData(
+                        uid,
+                        User(
+                            fullName = fullName,
+                            email = email,
+                            address = binding.etAddress.text.toString(),
+                            virtualAccount = binding.etVirtualAccount.text.toString(),
+                            phoneNumber = binding.etPhoneNumber.text.toString(),
+                        )
                     )
-                )
 
-                // Send order of motorcycle
-                viewModel.sendOrderMotorcycle(
-                    uid,
-                    MotorcycleOrderDetails(
-                        uuid = UUID.randomUUID().toString(),
-                        motorcycleName = userData?.motorcycleName ?: "",
-                        motorcycleImage = userData?.motorcycleImage ?: "",
-                        price = userData?.price ?: 0.0,
-                        orderedBy = fullName,
-                        phoneNumber = binding.etPhoneNumber.text.toString(),
-                        addressTo = binding.etAddress.text.toString(),
-                        orderedAt = Calendar.getInstance().time.toString(),
-                        status = "In Process"
+                    // Send order of motorcycle
+                    viewModel.sendOrderMotorcycle(
+                        uid,
+                        MotorcycleOrderDetails(
+                            uuid = UUID.randomUUID().toString(),
+                            motorcycleName = userData?.motorcycleName ?: "",
+                            motorcycleImage = userData?.motorcycleImage ?: "",
+                            price = userData?.price ?: 0.0,
+                            orderedBy = fullName,
+                            phoneNumber = binding.etPhoneNumber.text.toString(),
+                            addressTo = binding.etAddress.text.toString(),
+                            paymentMethod = paymentMethod,
+                            virtualAccount = binding.etVirtualAccount.text.toString(),
+                            orderedAt = Calendar.getInstance().time.toString(),
+                            status = getString(R.string.text_in_process)
+                        )
                     )
-                )
-
+                } else {
+                    Toast.makeText(this@CheckoutActivity, getString(R.string.text_valid_virtual_account), Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
@@ -121,7 +137,12 @@ class CheckoutActivity : AppCompatActivity() {
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
 
         val pendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_MUTABLE)
+            PendingIntent.getActivity(
+                this,
+                0,
+                intent,
+                PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_MUTABLE
+            )
         } else {
             PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT)
         }
@@ -131,22 +152,26 @@ class CheckoutActivity : AppCompatActivity() {
         val builder: NotificationCompat.Builder =
             NotificationCompat.Builder(applicationContext, MyFirebaseMessagingService.CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_motorcycle)
-                .setStyle(NotificationCompat.BigTextStyle()
-                    .setBigContentTitle(title)
-                    .bigText(message))
+                .setStyle(
+                    NotificationCompat.BigTextStyle()
+                        .setBigContentTitle(title)
+                        .setSummaryText(title)
+                        .bigText(message)
+                )
                 .setAutoCancel(true)
                 .setVibrate(longArrayOf(1000, 1000, 1000, 1000))
                 .setOnlyAlertOnce(true)
                 .setContentIntent(pendingIntent)
 
         val notificationManager =
-            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            getSystemService(NOTIFICATION_SERVICE) as NotificationManager
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationChannel =
                 NotificationChannel(
                     MyFirebaseMessagingService.CHANNEL_ID,
-                    MyFirebaseMessagingService.CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH)
+                    MyFirebaseMessagingService.CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH
+                )
             notificationManager.createNotificationChannel(notificationChannel)
         }
 
@@ -162,6 +187,7 @@ class CheckoutActivity : AppCompatActivity() {
                 is Resource.Success -> {
                     binding.etPhoneNumber.setText(it.data?.phoneNumber)
                     binding.etAddress.setText(it.data?.address)
+                    binding.etVirtualAccount.setText(it.data?.virtualAccount)
                     fullName = it.data?.fullName ?: ""
                 }
                 is Resource.Error -> {
@@ -197,7 +223,7 @@ class CheckoutActivity : AppCompatActivity() {
                     }
 
                     generateNotification(
-                        "Order Received",
+                        getString(R.string.title_order_received),
                         "Your order for ${userData?.motorcycleName} is now being processed. Thank you for trusting us!"
                     )
 
@@ -214,6 +240,8 @@ class CheckoutActivity : AppCompatActivity() {
 
     companion object {
         const val CHECKOUT_DATA = "CHECKOUT_DATA"
+        const val PAYMENT_COD = "COD"
+        const val PAYMENT_VA = "Virtual Account"
         private const val NOTIFICATION_ID = 1
         private const val CHANNEL_ID = "channel_01"
         private const val CHANNEL_NAME = "notification channel"
