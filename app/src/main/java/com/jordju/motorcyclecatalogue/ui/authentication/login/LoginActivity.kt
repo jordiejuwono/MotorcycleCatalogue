@@ -86,7 +86,7 @@ class LoginActivity : AppCompatActivity() {
         viewModel.loginState.observe(this) {
             when (it) {
                 is Resource.Loading -> {
-                    showLoading(false)
+                    showLoading(true)
                 }
                 is Resource.Success -> {
                     showLoading(false)

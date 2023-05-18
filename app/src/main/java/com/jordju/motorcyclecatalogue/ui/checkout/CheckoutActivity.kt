@@ -13,6 +13,7 @@ import android.widget.RadioGroup.OnCheckedChangeListener
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.app.NotificationCompat
+import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.jordju.core.data.Resource
 import com.jordju.core.data.local.room.entity.MotorcycleEntity
@@ -197,34 +198,46 @@ class CheckoutActivity : AppCompatActivity() {
         notificationManager.notify(notificationId, builder.build())
     }
 
+    private fun showLoading(isVisible: Boolean) {
+        binding.apply {
+            svContent.isVisible = !isVisible
+            pbLoading.isVisible = isVisible
+        }
+    }
+
+    private fun showSendLoading(isVisible: Boolean) {
+        binding.flLoading.isVisible = isVisible
+    }
+
     private fun observeData() {
         viewModel.userFullDataState.observe(this) {
             when (it) {
                 is Resource.Loading -> {
-
+                    showLoading(true)
                 }
                 is Resource.Success -> {
                     binding.etPhoneNumber.setText(it.data?.phoneNumber)
                     binding.etAddress.setText(it.data?.address)
                     binding.etVirtualAccount.setText(it.data?.virtualAccount)
                     fullName = it.data?.fullName ?: ""
+                    showLoading(false)
                 }
                 is Resource.Error -> {
-
+                    showLoading(false)
                 }
             }
         }
         viewModel.currentUserState.observe(this) {
             when (it) {
                 is Resource.Loading -> {
-
+                    showLoading(true)
                 }
                 is Resource.Success -> {
                     uid = it.data?.uid ?: ""
                     email = it.data?.email ?: ""
                 }
                 is Resource.Error -> {
-
+                    Toast.makeText(this, it.message.orEmpty(), Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -232,9 +245,10 @@ class CheckoutActivity : AppCompatActivity() {
         viewModel.sendOrderState.observe(this) {
             when (it) {
                 is Resource.Loading -> {
-
+                    showSendLoading(true)
                 }
                 is Resource.Success -> {
+                    showSendLoading(false)
                     val userData = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                         intent.getParcelableExtra(CHECKOUT_DATA, MotorcycleEntity::class.java)
                     } else {
@@ -249,7 +263,8 @@ class CheckoutActivity : AppCompatActivity() {
                     finish()
                 }
                 is Resource.Error -> {
-
+                    showSendLoading(false)
+                    Toast.makeText(this, getString(R.string.text_order_failed), Toast.LENGTH_SHORT).show()
                 }
             }
         }

@@ -18,7 +18,7 @@
     <string name="text_full_name">Full Name</string>
     <string name="description_profile_picture">Profile Picture Placeholder</string>
     <string name="text_edit_profile">Edit Profile</string>
-    <string name="text_login">Login</string>
+    <string name="text_login"> Login</string>
     <string name="description_app_logo">App Logo</string>
     <string name="text_app_name">MotoShop</string>
     <string name="text_email">Email</string>
@@ -26,7 +26,7 @@
     <string name="hint_enter_email">Enter email address</string>
     <string name="hint_password">Enter password</string>
     <string name="text_dont_have_account">Don\'t have an account yet? </string>
-    <string name="text_register">Register</string>
+    <string name="text_register"> Register</string>
     <string name="text_product_details">Product Details</string>
     <string name="text_delivery_details">Delivery Details</string>
     <string name="text_order_id">Order ID</string>
@@ -61,4 +61,7 @@
     <string name="text_password_empty">Password field cannot be empty</string>
     <string name="text_full_name_empty">Full name field cannot be empty</string>
     <string name="text_no_favorite">No Favorite Motorcycle</string>
+    <string name="text_order_failed">Failed to order motorcycle, please check your connection</string>
+    <string name="text_fail_update_data">Failed to update profile data</string>
+    <string name="text_cancel_order_failed">Failed to cancel order, please check your connection</string>
 </resources>

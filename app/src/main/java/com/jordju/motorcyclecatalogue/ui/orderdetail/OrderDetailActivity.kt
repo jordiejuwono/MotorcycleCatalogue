@@ -9,9 +9,11 @@ import android.content.pm.PackageManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.jordju.core.data.Resource
 import com.jordju.core.data.model.MotorcycleOrderDetails
@@ -124,17 +126,30 @@ class OrderDetailActivity : AppCompatActivity() {
         notificationManager.notify(notificationId, builder.build())
     }
 
+    private fun showLoading(isVisible: Boolean) {
+        binding.apply {
+            svContent.isVisible = !isVisible
+            pbLoading.isVisible = isVisible
+        }
+    }
+
+    private fun showSendLoading(isVisible: Boolean) {
+        binding.flLoading.isVisible = isVisible
+    }
+
     private fun observeData() {
         viewModel.currentUserState.observe(this) {
             when(it) {
                 is Resource.Loading -> {
-
+                    showLoading(true)
                 }
                 is Resource.Success -> {
                     uid = it.data?.uid ?: ""
+                    showLoading(false)
                 }
                 is Resource.Error -> {
-
+                    showLoading(false)
+                    Toast.makeText(this, it.message.orEmpty(), Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -142,9 +157,10 @@ class OrderDetailActivity : AppCompatActivity() {
         viewModel.cancelOrderState.observe(this) {
             when(it) {
                 is Resource.Loading -> {
-
+                    showSendLoading(true)
                 }
                 is Resource.Success -> {
+                    showSendLoading(false)
                     val userData = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                         intent.getParcelableExtra(ORDER_DETAIL, MotorcycleOrderDetails::class.java)
                     } else {
@@ -159,7 +175,8 @@ class OrderDetailActivity : AppCompatActivity() {
                     finish()
                 }
                 is Resource.Error -> {
-
+                    showLoading(false)
+                    Toast.makeText(this, getString(R.string.text_cancel_order_failed), Toast.LENGTH_SHORT).show()
                 }
             }
         }

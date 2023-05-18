@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.jordju.core.data.Resource
 import com.jordju.core.data.model.User
@@ -72,6 +73,17 @@ class EditProfileActivity : AppCompatActivity() {
         launcherIntentGallery.launch(chooser)
     }
 
+    private fun showLoading(isVisible: Boolean) {
+        binding.apply {
+            svContent.isVisible = !isVisible
+            pbLoading.isVisible = isVisible
+        }
+    }
+
+    private fun showSendLoading(isVisible: Boolean) {
+        binding.flLoading.isVisible = isVisible
+    }
+
     private fun editProfileData() {
         binding.btnEditProfile.setOnClickListener {
             binding.etFullName.error = null
@@ -110,7 +122,7 @@ class EditProfileActivity : AppCompatActivity() {
         viewModel.currentUserState.observe(this) {
             when(it) {
                 is Resource.Loading -> {
-
+                    showLoading(true)
                 }
                 is Resource.Success -> {
                     userUid = it.data?.uid ?: ""
@@ -126,14 +138,16 @@ class EditProfileActivity : AppCompatActivity() {
         viewModel.saveUserDataState.observe(this) {
             when(it) {
                 is Resource.Loading -> {
-
+                    showSendLoading(true)
                 }
                 is Resource.Success -> {
+                    showSendLoading(false)
                     Toast.makeText(this, getString(R.string.text_update_success), Toast.LENGTH_SHORT).show()
                     finish()
                 }
                 is Resource.Error -> {
-
+                    showSendLoading(false)
+                    Toast.makeText(this, getString(R.string.text_fail_update_data), Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -141,7 +155,7 @@ class EditProfileActivity : AppCompatActivity() {
         viewModel.photoState.observe(this) {
             when(it) {
                 is Resource.Loading -> {
-
+                    showLoading(true)
                 }
                 is Resource.Success -> {
                     if (it.data != null) {
@@ -149,6 +163,7 @@ class EditProfileActivity : AppCompatActivity() {
                             .load(it.data)
                             .into(binding.ivProfilePicture)
                     }
+                    showLoading(false)
                 }
                 is Resource.Error -> {
 
@@ -159,16 +174,17 @@ class EditProfileActivity : AppCompatActivity() {
         viewModel.userFullDataState.observe(this) {
             when(it) {
                 is Resource.Loading -> {
-
+                    showLoading(true)
                 }
                 is Resource.Success -> {
                     binding.etFullName.setText(it.data?.fullName)
                     binding.etAddress.setText(it.data?.address)
                     binding.etPhoneNumber.setText(it.data?.phoneNumber)
                     binding.etVirtualAccount.setText(it.data?.virtualAccount)
+                    showLoading(false)
                 }
                 is Resource.Error -> {
-
+                    showLoading(false)
                 }
             }
         }
