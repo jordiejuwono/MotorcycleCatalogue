@@ -89,6 +89,8 @@ Given the customer click on the list
 The customer can also look at motorcycle gallery on scroll
 ```
 
+<img src="https://drive.google.com/file/d/1VsQrsACxBwLcJBn3U_CZ0YI1sa4jHOC4/view?usp=share_link" width="550" height="550">
+
 ### **Story: As a User, I can order a motorcycle product (with notification)**
 ### **Example Narrative**
 ```
