@@ -3,9 +3,9 @@ package com.jordju.core.domain.repository
 import android.net.Uri
 import com.google.firebase.auth.FirebaseUser
 import com.jordju.core.data.Resource
-import com.jordju.core.data.local.room.entity.MotorcycleEntity
 import com.jordju.core.data.model.MotorcycleOrderDetails
 import com.jordju.core.data.model.User
+import com.jordju.core.domain.entities.Motorcycle
 import kotlinx.coroutines.flow.Flow
 
 interface MotorcycleRepository {
@@ -24,9 +24,9 @@ interface MotorcycleRepository {
     fun logoutUser()
 
     // local
-    fun getAllMotorcycles(): Flow<Resource<List<MotorcycleEntity>>>
-    suspend fun getAllFavoriteMotorcycles(): Flow<Resource<List<MotorcycleEntity>>>
-    suspend fun deleteMotorcycleFromWishlist(motorcycle: MotorcycleEntity)
+    fun getAllMotorcycles(): Flow<Resource<List<Motorcycle>>>
+    suspend fun getAllFavoriteMotorcycles(): Flow<Resource<List<Motorcycle>>>
+    suspend fun deleteMotorcycleFromWishlist(motorcycle: Motorcycle)
     fun isMotorcycleAlreadyExists(id: Int): Flow<Boolean>
     suspend fun setMotorcycleFavoriteStatus(motorcycleId: Int, setToFavorite: Boolean)
 }

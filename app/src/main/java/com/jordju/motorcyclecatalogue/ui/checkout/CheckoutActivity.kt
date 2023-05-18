@@ -8,17 +8,15 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.RadioGroup
-import android.widget.RadioGroup.OnCheckedChangeListener
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.app.NotificationCompat
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.jordju.core.data.Resource
-import com.jordju.core.data.local.room.entity.MotorcycleEntity
 import com.jordju.core.data.model.MotorcycleOrderDetails
 import com.jordju.core.data.model.User
+import com.jordju.core.domain.entities.Motorcycle
 import com.jordju.motorcyclecatalogue.R
 import com.jordju.motorcyclecatalogue.databinding.ActivityCheckoutBinding
 import com.jordju.motorcyclecatalogue.ui.home.MainActivity
@@ -64,9 +62,9 @@ class CheckoutActivity : AppCompatActivity() {
 
     private fun bindData() {
         val userData = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra(CHECKOUT_DATA, MotorcycleEntity::class.java)
+            intent.getParcelableExtra(CHECKOUT_DATA, Motorcycle::class.java)
         } else {
-            intent.getParcelableExtra<MotorcycleEntity>(CHECKOUT_DATA)
+            intent.getParcelableExtra<Motorcycle>(CHECKOUT_DATA)
         }
 
         val localeId = Locale("in", "ID")
@@ -78,18 +76,15 @@ class CheckoutActivity : AppCompatActivity() {
                 .into(ivMotorcycle)
             tvName.text = userData?.motorcycleName
             tvPrice.text = formatRupiah.format(userData?.price)
-            rgPayment.setOnCheckedChangeListener(object : OnCheckedChangeListener {
-                override fun onCheckedChanged(group: RadioGroup?, id: Int) {
-                    if (id == R.id.rb_cod) {
-                        paymentMethod = PAYMENT_COD
-                        binding.etVirtualAccount.visibility = View.GONE
-                    } else {
-                        paymentMethod = PAYMENT_VA
-                        binding.etVirtualAccount.visibility = View.VISIBLE
-                    }
+            rgPayment.setOnCheckedChangeListener { _, id ->
+                if (id == R.id.rb_cod) {
+                    paymentMethod = PAYMENT_COD
+                    binding.etVirtualAccount.visibility = View.GONE
+                } else {
+                    paymentMethod = PAYMENT_VA
+                    binding.etVirtualAccount.visibility = View.VISIBLE
                 }
-
-            })
+            }
             btnBuy.setOnClickListener {
                 binding.etPhoneNumber.error = null
                 binding.etAddress.error = null
@@ -249,9 +244,9 @@ class CheckoutActivity : AppCompatActivity() {
                 is Resource.Success -> {
                     showSendLoading(false)
                     val userData = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                        intent.getParcelableExtra(CHECKOUT_DATA, MotorcycleEntity::class.java)
+                        intent.getParcelableExtra(CHECKOUT_DATA, Motorcycle::class.java)
                     } else {
-                        intent.getParcelableExtra<MotorcycleEntity>(CHECKOUT_DATA)
+                        intent.getParcelableExtra<Motorcycle>(CHECKOUT_DATA)
                     }
 
                     generateNotification(

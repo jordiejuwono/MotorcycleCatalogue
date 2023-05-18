@@ -11,13 +11,12 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jordju.core.data.Resource
-import com.jordju.core.data.local.room.entity.MotorcycleEntity
+import com.jordju.core.domain.entities.Motorcycle
 import com.jordju.motorcyclecatalogue.R
 import com.jordju.motorcyclecatalogue.databinding.FragmentMotorcycleListBinding
 import com.jordju.motorcyclecatalogue.ui.checkout.CheckoutActivity
 import com.jordju.motorcyclecatalogue.ui.detail.DetailActivity
 import com.jordju.motorcyclecatalogue.ui.favorite.FavoriteActivity
-import com.jordju.motorcyclecatalogue.ui.home.motorcyclelist.adapter.FavoriteAdapter
 import com.jordju.motorcyclecatalogue.ui.home.motorcyclelist.adapter.MotorcycleAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -53,19 +52,19 @@ class MotorcycleListFragment : Fragment() {
     private fun setupRecyclerView() {
         val motorcycleAdapter = MotorcycleAdapter(object : MotorcycleAdapter.OnItemClick {
 
-            override fun onClick(motorcycle: MotorcycleEntity) {
+            override fun onClick(motorcycle: Motorcycle) {
                 val intent = Intent(requireContext(), DetailActivity::class.java)
                 intent.putExtra(DetailActivity.DETAIL_DATA, motorcycle)
                 startActivity(intent)
             }
 
-            override fun onCheckOutClick(motorcycle: MotorcycleEntity) {
+            override fun onCheckOutClick(motorcycle: Motorcycle) {
                 val intent = Intent(requireContext(), CheckoutActivity::class.java)
                 intent.putExtra(CheckoutActivity.CHECKOUT_DATA, motorcycle)
                 startActivity(intent)
             }
 
-            override fun onFavoriteClick(motorcycle: MotorcycleEntity) {
+            override fun onFavoriteClick(motorcycle: Motorcycle) {
                 if (motorcycle.isFavorite) {
                     viewModel.setFavoriteStatus(
                         motorcycleId = motorcycle.motorcycleId,

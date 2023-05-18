@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jordju.core.data.Resource
-import com.jordju.core.data.local.room.entity.MotorcycleEntity
+import com.jordju.core.domain.entities.Motorcycle
 import com.jordju.core.domain.usecase.GetAllFavoriteMotorcyclesUseCase
 import com.jordju.core.domain.usecase.SetMotorcycleFavoriteStatusUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,7 +18,7 @@ class FavoriteViewModel @Inject constructor(
     private val setMotorcycleFavoriteStatusUseCase: SetMotorcycleFavoriteStatusUseCase
 ) : ViewModel() {
 
-    val favoriteState = MutableLiveData<Resource<List<MotorcycleEntity>>>()
+    val favoriteState = MutableLiveData<Resource<List<Motorcycle>>>()
     val setStateFavorite = MutableLiveData<Resource<Boolean>>()
 
     fun getAllFavoriteMotorcycles() {

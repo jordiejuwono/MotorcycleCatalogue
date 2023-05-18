@@ -3,19 +3,18 @@ package com.jordju.motorcyclecatalogue.ui.favorite
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jordju.core.data.Resource
-import com.jordju.core.data.local.room.entity.MotorcycleEntity
+import com.jordju.core.domain.entities.Motorcycle
 import com.jordju.motorcyclecatalogue.R
 import com.jordju.motorcyclecatalogue.databinding.ActivityFavoriteBinding
 import com.jordju.motorcyclecatalogue.ui.checkout.CheckoutActivity
 import com.jordju.motorcyclecatalogue.ui.detail.DetailActivity
-import com.jordju.motorcyclecatalogue.ui.home.motorcyclelist.adapter.FavoriteAdapter
+import com.jordju.motorcyclecatalogue.ui.favorite.adapter.FavoriteAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -24,7 +23,6 @@ class FavoriteActivity : AppCompatActivity() {
     private lateinit var binding: ActivityFavoriteBinding
 
     private val viewModel: FavoriteViewModel by viewModels()
-//    private lateinit var adapter: FavoriteAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,19 +52,19 @@ class FavoriteActivity : AppCompatActivity() {
     private fun setupRecyclerView() {
         val adapterFavorite = FavoriteAdapter(object : FavoriteAdapter.OnItemClick {
 
-            override fun onClick(motorcycle: MotorcycleEntity) {
+            override fun onClick(motorcycle: Motorcycle) {
                 val intent = Intent(this@FavoriteActivity, DetailActivity::class.java)
                 intent.putExtra(DetailActivity.DETAIL_DATA, motorcycle)
                 startActivity(intent)
             }
 
-            override fun onCheckOutClick(motorcycle: MotorcycleEntity) {
+            override fun onCheckOutClick(motorcycle: Motorcycle) {
                 val intent = Intent(this@FavoriteActivity, CheckoutActivity::class.java)
                 intent.putExtra(CheckoutActivity.CHECKOUT_DATA, motorcycle)
                 startActivity(intent)
             }
 
-            override fun onFavoriteClick(motorcycle: MotorcycleEntity) {
+            override fun onFavoriteClick(motorcycle: Motorcycle) {
                 viewModel.setFavoriteStatus(
                     motorcycleId = motorcycle.motorcycleId,
                     setToFavorite = false,

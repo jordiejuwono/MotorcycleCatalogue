@@ -7,10 +7,8 @@ import android.os.Bundle
 import android.text.Html
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
-import com.bumptech.glide.Glide
-import com.jordju.core.data.local.room.entity.MotorcycleEntity
+import com.jordju.core.domain.entities.Motorcycle
 import com.jordju.motorcyclecatalogue.R
 import com.jordju.motorcyclecatalogue.databinding.ActivityDetailBinding
 import com.jordju.motorcyclecatalogue.ui.checkout.CheckoutActivity
@@ -97,9 +95,9 @@ class DetailActivity : AppCompatActivity() {
 
     private fun setData() {
         val userData = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra(DETAIL_DATA, MotorcycleEntity::class.java)
+            intent.getParcelableExtra(DETAIL_DATA, Motorcycle::class.java)
         } else {
-            intent.getParcelableExtra<MotorcycleEntity>(DETAIL_DATA)
+            intent.getParcelableExtra<Motorcycle>(DETAIL_DATA)
         }
 
         val localeId = Locale("in", "ID")

@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jordju.core.data.Resource
 import com.jordju.core.data.local.room.entity.MotorcycleEntity
+import com.jordju.core.domain.entities.Motorcycle
 import com.jordju.core.domain.usecase.FetchFirebaseMessagingTokenUseCase
 import com.jordju.core.domain.usecase.GetAllMotorcyclesUseCase
 import com.jordju.core.domain.usecase.SetMotorcycleFavoriteStatusUseCase
@@ -20,7 +21,7 @@ class MotorcycleListViewModel @Inject constructor(
     private val setMotorcycleFavoriteStatusUseCase: SetMotorcycleFavoriteStatusUseCase
 ) : ViewModel() {
 
-    val motorcyclesState = MutableLiveData<Resource<List<MotorcycleEntity>>>()
+    val motorcyclesState = MutableLiveData<Resource<List<Motorcycle>>>()
 
     fun getAllMotorcycles() {
         viewModelScope.launch {

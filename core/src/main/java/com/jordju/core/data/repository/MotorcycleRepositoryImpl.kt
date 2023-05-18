@@ -8,7 +8,9 @@ import com.jordju.core.data.local.room.entity.MotorcycleEntity
 import com.jordju.core.data.model.MotorcycleOrderDetails
 import com.jordju.core.data.model.User
 import com.jordju.core.data.remote.FirebaseDataSource
+import com.jordju.core.domain.entities.Motorcycle
 import com.jordju.core.domain.repository.MotorcycleRepository
+import com.jordju.core.utils.DataMapper
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
@@ -75,7 +77,7 @@ class MotorcycleRepositoryImpl @Inject constructor(
         return firebaseDataSource.logoutUser()
     }
 
-    override fun getAllMotorcycles(): Flow<Resource<List<MotorcycleEntity>>> = flow {
+    override fun getAllMotorcycles(): Flow<Resource<List<Motorcycle>>> = flow {
         emit(Resource.Loading())
 
         localDataSource.getAllMotorcycles()
@@ -83,11 +85,11 @@ class MotorcycleRepositoryImpl @Inject constructor(
                 emit(Resource.Error(it.message))
             }
             .collect {
-                emit(Resource.Success(it))
+                emit(Resource.Success(DataMapper.mapListMotorcycleEntity(it)))
             }
     }
 
-    override suspend fun getAllFavoriteMotorcycles(): Flow<Resource<List<MotorcycleEntity>>> = flow {
+    override suspend fun getAllFavoriteMotorcycles(): Flow<Resource<List<Motorcycle>>> = flow {
         emit(Resource.Loading())
 
         localDataSource.getAllFavoriteMotorcycles()
@@ -95,12 +97,12 @@ class MotorcycleRepositoryImpl @Inject constructor(
                 emit(Resource.Error(it.message))
             }
             .collect {
-                emit(Resource.Success(it))
+                emit(Resource.Success(DataMapper.mapListMotorcycleEntity(it)))
             }
     }
 
-    override suspend fun deleteMotorcycleFromWishlist(motorcycle: MotorcycleEntity) {
-        return localDataSource.deleteMotorcycleFromWishlist(motorcycle)
+    override suspend fun deleteMotorcycleFromWishlist(motorcycle: Motorcycle) {
+        return localDataSource.deleteMotorcycleFromWishlist(DataMapper.mapMotorcycleToEntity(motorcycle))
     }
 
     override fun isMotorcycleAlreadyExists(id: Int): Flow<Boolean> {

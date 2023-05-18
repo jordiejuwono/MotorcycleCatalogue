@@ -141,6 +141,21 @@ class EditProfileActivity : AppCompatActivity() {
                     showSendLoading(true)
                 }
                 is Resource.Success -> {
+
+                }
+                is Resource.Error -> {
+                    showSendLoading(false)
+                    Toast.makeText(this, getString(R.string.text_fail_update_data), Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+        viewModel.saveProfilePictureState.observe(this) {
+            when(it) {
+                is Resource.Loading -> {
+                    showSendLoading(true)
+                }
+                is Resource.Success -> {
                     showSendLoading(false)
                     Toast.makeText(this, getString(R.string.text_update_success), Toast.LENGTH_SHORT).show()
                     finish()
