@@ -1,14 +1,16 @@
 # Motorcycle Catalogue
 Application to show motorcycles list and buy motorcycles
 
-(Usually for best practice and security purpose we need to hide and ignore to push google-services.json <br />
-that we get from Firebase because it's dangerous to push it to Version Control (because it contains alot of privacy and dangerous files to upload).<br />
-But for the test and to make it easier to run the application I have included google-services.json to the BitBucket)<br />
+![app_summary](https://drive.google.com/uc?id=1U0aiqeSK7e2qbh8u1lXi-BtXH9KzyszZ)
+
+### **Note :**
+(Usually for best practice and security purpose we need to hide and ignore to push google-services.json that we get from Firebase because it's dangerous to push it to Version Control (because it contains alot of privacy and dangerous files to upload). But for the test and to make it easier to run the application I have included google-services.json to the BitBucket).
 <br />
-To run the application, you must use Android Studio and clone this repository:<br />
+<br />
+### **To run the application, you must use Android Studio and clone this repository:**
 - Clone the repository using git clone (git clone https://[your_user_name]@bitbucket.org/motorcyclecatalogue/motorcyclecatalogue.git or you can just download the zip file<br />
 - Open the application / repository using Android Studio<br />
-- You can run using emulator or with Android phone (ADB must be enabled first), you can also build apk to test the application (Build - Build Bundle(s) / APK(s) - Build APK(s))<br />
+- You can run using emulator or connect with your Android phone (Developer mode must be enabled first), you can also build apk to test the application (Build - Build Bundle(s) / APK(s) - Build APK(s)) and download it on your phone<br />
 
 ## **Tech Stack Used**
 - Kotlin<br />
@@ -32,6 +34,8 @@ Given the customer register using email and password
 When the customer enter invalid email and password
 Then the app should notify the validation error for email or password
 ```
+**App Image**<br />
+![app_register](https://drive.google.com/uc?id=1ybGmf-0wd30WbLY0rVExNze0LbisVZqS)
 
 ### **Story: As a User, I can Login**
 
@@ -45,6 +49,8 @@ Given the customer login using email and password
 When the customer enter invalid email and password
 Then the app should show the error
 ```
+**App Image**<br />
+![app_login](https://drive.google.com/uc?id=1Xs2C-TCmlVyVMwkSzJAWZCYX0PGclTGb)
 
 ### **Story: As a User, I can edit my profile including my profile picture**
 ### **Example Narrative**
@@ -56,6 +62,8 @@ As a customer I want to be able to edit my profile data and profile picture
 Given the customer edit profile
 The customer can edit profile data (fullname, phone number, address, virtual account) and profile picture
 ```
+**App Image**<br />
+![app_edit_profile](https://drive.google.com/uc?id=1f5miWM9svx-pTwqXDj7yjB4SoWFlT-Qa)
 
 ### **Story: As a User, I can see motorcycle catalogue with motorcycle thumbnail**
 ### **Example Narrative**
@@ -67,6 +75,8 @@ As a customer I want to be able to see motorcycle list with the thumbnail
 Given the customer has logged in
 The customer can see motorcycle list with motorcycle name and price
 ```
+**App Image**<br />
+![app_motorcycle_list](https://drive.google.com/uc?id=1c6Tmdc0mxJdFn5Wf7M3En8kNXF03r3Bn)
 
 ### **Story: As a User, I can see the details of motorcycle**
 ### **Example Narrative**
@@ -78,6 +88,9 @@ As a customer I want to be able to look at motorcycle details on click
 Given the customer click one of the motorcycle list
 The customer can look at the detail of motorcycle and also be able to order from the details
 ```
+**App Image**<br />
+![app_details](https://drive.google.com/uc?id=1B9wo7UVidKhbUKxq__9D1sMedkYUhllu)
+
 ### **Story: As a User, I can see motorcycle gallery**
 ### **Example Narrative**
 ```
@@ -88,8 +101,8 @@ As a customer I want to be able to look at motorcycle gallery on detail page
 Given the customer click on the list
 The customer can also look at motorcycle gallery on scroll
 ```
-
-![text](https://drive.google.com/uc?id=1ootwJtvLwxs4HLuC2Z_ZvSV0NnoP9gta){width=640 height=480}
+**App Image**<br />
+![app_gallery](https://drive.google.com/uc?id=1VMwemFKXMvcY_G2vPkyeOb_rDV5Pg57o)
 
 ### **Story: As a User, I can order a motorcycle product (with notification)**
 ### **Example Narrative**
@@ -101,6 +114,8 @@ As a customer I want to be able to order and notified that the order is successf
 Given the customer order the motorcycle
 The customer can be notified when the order is successful and being processed
 ```
+**App Image**<br />
+![app_order](https://drive.google.com/uc?id=1j6K2iLfMHshcdmyhIemvAquEeQmBec2o)
 
 ### **Story: As a User, I can see my orders**
 ### **Example Narrative**
@@ -112,6 +127,8 @@ As a customer I want to be able to look at the items that I ordered
 Given the customer has buy the motorcycle
 The customer can look at the orders and order details
 ```
+**App Image**<br />
+![app_transactions](https://drive.google.com/uc?id=1qZT-sAcCy4lfy6Wg79WgKEwtsrjxhT0P)
 
 ### **Story: As a User, I can cancel my orders (with notification)**
 ### **Example Narrative**
@@ -123,3 +140,5 @@ As a customer I want to be able to cancel the order before it was send to my add
 Given the customer has order the motorcycle
 The customer can cancel the order if the order is still being processed
 ```
+**App Image**<br />
+![app_cancel](https://drive.google.com/uc?id=1dDympQTQzK383eer3Y67v5KxYbBSC11X)
