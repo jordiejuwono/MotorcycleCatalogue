@@ -20,8 +20,6 @@ interface MotorcycleRepository {
     suspend fun cancelMotorcycleOrder(userReference: String, orderId: String): Flow<Resource<Boolean>>
     fun getCurrentUser(): FirebaseUser?
     suspend fun fetchFirebaseMessagingToken(): Flow<Resource<String>>
-    suspend fun subscribeToTopic(uid: String): Flow<Resource<Boolean>>
-    suspend fun sendDataToTopic(uid: String, title: String, message: String): Flow<Resource<Boolean>>
     suspend fun getUserFullData(): Flow<Resource<User?>>
     fun logoutUser()
 

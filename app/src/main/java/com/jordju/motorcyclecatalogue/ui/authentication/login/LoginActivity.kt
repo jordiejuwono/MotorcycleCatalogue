@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Patterns
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.core.view.isVisible
 import com.jordju.core.data.Resource
 import com.jordju.motorcyclecatalogue.R
 import com.jordju.motorcyclecatalogue.databinding.ActivityLoginBinding
@@ -77,17 +78,22 @@ class LoginActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    fun showLoading(isVisible: Boolean) {
+        binding.flLoading.isVisible = isVisible
+    }
+
     private fun observeData() {
         viewModel.loginState.observe(this) {
             when (it) {
                 is Resource.Loading -> {
-
+                    showLoading(false)
                 }
                 is Resource.Success -> {
+                    showLoading(false)
                     intentToHomePage()
-                    viewModel.subscribeToTopic(it.data?.uid ?: "")
                 }
                 is Resource.Error -> {
+                    showLoading(false)
                     Toast.makeText(this, it.message.orEmpty(), Toast.LENGTH_SHORT).show()
                 }
             }

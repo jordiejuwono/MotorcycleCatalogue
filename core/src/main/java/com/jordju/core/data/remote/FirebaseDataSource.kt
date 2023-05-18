@@ -34,14 +34,6 @@ interface FirebaseDataSource {
     suspend fun getMotorcyclesOrder(userReference: String): Flow<Resource<List<MotorcycleOrderDetails>>>
     suspend fun cancelMotorcycleOrder(userReference: String, orderId: String): Flow<Resource<Boolean>>
     suspend fun fetchFirebaseMessagingToken(): Flow<Resource<String>>
-    suspend fun subscribeToTopic(uid: String): Flow<Resource<Boolean>>
-    suspend fun sendDataToTopic(
-        uid: String,
-        title: String,
-        message: String
-    ): Flow<Resource<Boolean>>
-
-    //    fun getUserProfilePicture(): String
     fun getCurrentUser(): FirebaseUser?
     fun logoutUser()
 }
@@ -253,58 +245,6 @@ class FirebaseDataSourceImpl @Inject constructor(private val auth: FirebaseAuth)
         }
 
     }
-
-    override suspend fun subscribeToTopic(uid: String): Flow<Resource<Boolean>> {
-        return callbackFlow {
-            trySend(Resource.Loading())
-            FirebaseMessaging.getInstance().subscribeToTopic(uid).addOnCompleteListener {
-                if (it.isSuccessful) {
-                    trySend(Resource.Success(true))
-                } else {
-                    trySend(Resource.Error(it.exception?.message))
-                }
-            }
-
-            awaitClose { this.cancel() }
-        }
-    }
-
-    override suspend fun sendDataToTopic(
-        uid: String,
-        title: String,
-        message: String
-    ): Flow<Resource<Boolean>> {
-        return callbackFlow {
-            trySend(Resource.Loading())
-            val remoteMessage = RemoteMessage.Builder(uid)
-                .addData("title", title)
-                .addData("body", message)
-                .build()
-            FirebaseMessaging.getInstance().send(remoteMessage)
-
-            awaitClose { this.cancel() }
-        }
-    }
-
-
-//    override suspend fun getUserProfilePicture(): Flow<Resource<String>> {
-//        return callbackFlow {
-//            trySend(Resource.Loading())
-//            FirebaseStorage.getInstance().getReference("users/${auth.currentUser?.uid}").downloadUrl.result
-//                .putFile(imageUri).addOnCompleteListener {
-//                    if (it.isSuccessful) {
-//                        trySend(Resource.Success(it.result.storage.path))
-//                    } else {
-//                        trySend(Resource.Error(it.exception?.message))
-//                    }
-//                }
-//                .addOnFailureListener {
-//                    trySend(Resource.Error(it.message))
-//                }
-//
-//            awaitClose { this.cancel() }
-//        }
-//    }
 
     override fun getCurrentUser(): FirebaseUser? {
         return auth.currentUser

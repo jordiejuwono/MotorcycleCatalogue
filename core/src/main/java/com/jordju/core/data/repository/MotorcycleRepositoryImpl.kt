@@ -67,18 +67,6 @@ class MotorcycleRepositoryImpl @Inject constructor(
         return firebaseDataSource.fetchFirebaseMessagingToken()
     }
 
-    override suspend fun subscribeToTopic(uid: String): Flow<Resource<Boolean>> {
-        return firebaseDataSource.subscribeToTopic(uid)
-    }
-
-    override suspend fun sendDataToTopic(
-        uid: String,
-        title: String,
-        message: String
-    ): Flow<Resource<Boolean>> {
-        return firebaseDataSource.sendDataToTopic(uid, title, message)
-    }
-
     override suspend fun getUserFullData(): Flow<Resource<User?>> {
         return firebaseDataSource.getUserFullData()
     }

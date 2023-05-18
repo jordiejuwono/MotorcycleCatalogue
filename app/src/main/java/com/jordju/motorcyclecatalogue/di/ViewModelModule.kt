@@ -24,9 +24,8 @@ object ViewModelModule {
 
     @Provides
     @ViewModelScoped
-    fun provideLoginViewModel(useCase: LoginUserUseCase,
-    subscribeToTopicUseCase: SubscribeToTopicUseCase): LoginViewModel {
-        return LoginViewModel(useCase, subscribeToTopicUseCase)
+    fun provideLoginViewModel(useCase: LoginUserUseCase): LoginViewModel {
+        return LoginViewModel(useCase)
     }
 
     @Provides

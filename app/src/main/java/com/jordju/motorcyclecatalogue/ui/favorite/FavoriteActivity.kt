@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
@@ -86,13 +87,18 @@ class FavoriteActivity : AppCompatActivity() {
             when (it) {
                 is Resource.Loading -> {
                     showLoading(true)
+                    binding.tvNoData.visibility = View.GONE
                 }
                 is Resource.Success -> {
                     showLoading(false)
+                    if (it.data?.isEmpty() == true) {
+                        binding.tvNoData.visibility = View.VISIBLE
+                    }
                     adapterFavorite.differ.submitList(it.data)
                 }
                 is Resource.Error -> {
                     showLoading(false)
+                    binding.tvNoData.visibility = View.GONE
                 }
             }
         }
@@ -105,7 +111,6 @@ class FavoriteActivity : AppCompatActivity() {
                 is Resource.Success -> {
                     showLoading(false)
                     getData()
-                    Log.d("ADAPTER ERROR", "onCreate: ${adapterFavorite.differ.currentList.size}")
                 }
                 is Resource.Error -> {
                     showLoading(false)

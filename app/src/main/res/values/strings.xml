@@ -60,4 +60,5 @@
     <string name="text_password_less_4">Password must be at least 4 digit</string>
     <string name="text_password_empty">Password field cannot be empty</string>
     <string name="text_full_name_empty">Full name field cannot be empty</string>
+    <string name="text_no_favorite">No Favorite Motorcycle</string>
 </resources>

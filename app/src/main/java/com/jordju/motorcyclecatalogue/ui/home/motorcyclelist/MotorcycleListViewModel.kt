@@ -9,9 +9,7 @@ import com.jordju.core.data.local.room.entity.MotorcycleEntity
 import com.jordju.core.domain.usecase.FetchFirebaseMessagingTokenUseCase
 import com.jordju.core.domain.usecase.GetAllMotorcyclesUseCase
 import com.jordju.core.domain.usecase.SetMotorcycleFavoriteStatusUseCase
-import com.jordju.core.domain.usecase.SubscribeToTopicUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

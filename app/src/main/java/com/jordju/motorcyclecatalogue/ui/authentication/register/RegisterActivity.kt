@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import com.jordju.core.data.Resource
 import com.jordju.core.data.model.User
 import com.jordju.motorcyclecatalogue.R
@@ -118,13 +119,18 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
+    private fun showLoading(isVisible: Boolean) {
+        binding.flLoading.isVisible = isVisible
+    }
+
     private fun observeData() {
         viewModel.registerState.observe(this) {
             when (it) {
                 is Resource.Loading -> {
-
+                    showLoading(true)
                 }
                 is Resource.Success -> {
+                    showLoading(false)
                     saveUserData(
                         it.data?.uid ?: "",
                         User(
@@ -144,6 +150,7 @@ class RegisterActivity : AppCompatActivity() {
                     startActivity(intent)
                 }
                 is Resource.Error -> {
+                    showLoading(false)
                     Toast.makeText(this, it.message.orEmpty(), Toast.LENGTH_SHORT).show()
                 }
             }

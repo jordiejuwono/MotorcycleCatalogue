@@ -50,9 +50,8 @@ class ProfileFragment : Fragment() {
     }
 
     override fun onResume() {
-        super.onResume()
         getData()
-        observeData()
+        super.onResume()
     }
 
     private fun refreshData() {
@@ -92,7 +91,6 @@ class ProfileFragment : Fragment() {
                 }
                 is Resource.Success -> {
                     uid = data.data?.uid ?: ""
-                    viewModel.fetchUserPhoto(data.data?.uid ?: "")
                 }
                 is Resource.Error -> {
 
@@ -127,6 +125,7 @@ class ProfileFragment : Fragment() {
                     showLoading(false)
                     binding.tvEmail.text = data.data?.email
                     binding.tvFullName.text = data.data?.fullName
+                    viewModel.fetchUserPhoto(uid)
                 }
                 is Resource.Error -> {
                     showLoading(false)
