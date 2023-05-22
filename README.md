@@ -3,15 +3,6 @@ Application to show motorcycles list and buy motorcycles
 
 ![app_summary](https://drive.google.com/uc?id=1U0aiqeSK7e2qbh8u1lXi-BtXH9KzyszZ)
 
-### **Note :**
-(Usually for best practice and security purpose we need to hide and ignore to push google-services.json that we get from Firebase because it's dangerous to push it to Version Control (because it contains alot of privacy and dangerous files to upload). But for the test and to make it easier to run the application I have included google-services.json to the BitBucket).
-<br />
-### **To run the application, you must use Android Studio and clone this repository:**
-- Clone the repository using git clone (git clone https://[your_user_name]@bitbucket.org/motorcyclecatalogue/motorcyclecatalogue.git or you can just download the zip file<br />
-- Open the application / repository using Android Studio<br />
-- You can run using emulator (sometimes the notification doesn't show up on emulator and require to wipe the emulator data) or connect with your Android phone (Developer mode must be enabled first), you can also build apk to test the application (Build - Build Bundle(s) / APK(s) - Build APK(s)) and download it on your phone<br />
-- If you use build APK then the APK will be located at your project directory - app - build - outputs - apk - debug - app.debug.apk<br />
-
 ## **Tech Stack Used**
 - Kotlin<br />
 - Room for Local Database<br />
@@ -142,14 +133,6 @@ The customer can cancel the order if the order is still being processed
 ```
 **App Image**<br />
 ![app_cancel](https://drive.google.com/uc?id=1dDympQTQzK383eer3Y67v5KxYbBSC11X)
-
-
-## **Technical Summaries**
-- When the application starts I use Room to pre-populate the local Database first so the list of motorcycles is ready when opening the application after Login Page.<br />
-- I use Room Local Database for pre-populate the Database with motorcycle list, Wishlist feature (additional feature with CRUD functionality).<br />
-- To seperate between business logic and presentation (UI) layer I use Dependency Injection (Hilt) with different module.
-- I also implement the application with Firebase for Authentication (Register, Login), Firestore (for saving user data and order transactions), and Storage (saving user profile picture)).<br />
-
 
 ### **Additional Feature (Wishlist with CRUD Functionality)**
 ### **Example Narrative**
